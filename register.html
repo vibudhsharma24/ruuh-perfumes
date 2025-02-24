@@ -1,0 +1,55 @@
+<!-- register.html -->
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Register</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+</head>
+<body class="bg-gray-100">
+    <div class="container mx-auto mt-10">
+        <div class="text-center">
+            <h1 class="text-3xl font-bold">Register</h1>
+            <nav class="text-gray-600 mt-2">
+               <!--<a href="index_page.html" class="hover:underline">Home</a> -->
+                <a href="index.html" class="hover:underline">Home</a> 
+
+                <span class="mx-2">></span> 
+                <a href="#" class="hover:underline">Create Account</a>
+            </nav>
+        </div>
+        <div class="max-w-md mx-auto mt-10 bg-white p-8 shadow-md">
+            <h2 class="text-2xl font-bold mb-6">Register</h2>
+            <form action="index.php" method="post">
+                <div class="mb-4">
+                    <input type="text" name="name" placeholder="First Name" required class="w-full px-3 py-2 border border-gray-300 rounded">
+                </div>
+                <div class="mb-4">
+                    <input type="text" name="middlename" placeholder="Middle Name" class="w-full px-3 py-2 border border-gray-300 rounded">
+                </div>
+                <div class="mb-4">
+                    <input type="text" name="lastname" placeholder="Last Name" required class="w-full px-3 py-2 border border-gray-300 rounded">
+                </div>
+                <div class="mb-4">
+                    <input type="email" name="email" placeholder="Email" required class="w-full px-3 py-2 border border-gray-300 rounded">
+                </div>
+                <div class="mb-4">
+                    <input type="password" name="password" placeholder="password" required class="w-full px-3 py-2 border border-gray-300 rounded">
+                </div>
+                <div class="mb-4">
+                    <label class="inline-flex items-center">
+                        <input type="checkbox" required class="form-checkbox">
+                        <span class="ml-2 text-sm">I agree with the <a href="#" class="text-blue-600 hover:underline">Terms & conditions</a></span>
+                    </label>
+                </div>
+                <div class="mb-4">
+                    <button type="submit" class="w-full bg-gray-600 text-white py-2 rounded">Register</button>
+                </div>
+                <div class="text-center">
+                    <a href="login.html" class="block w-full border border-black text-black py-2 rounded text-center">Log In</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</body>
+</html>

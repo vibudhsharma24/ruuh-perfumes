@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>Product Page</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet"/>
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+        }
+        .slider {
+            position: relative;
+            overflow: hidden;
+        }
+        .slides {
+            display: flex;
+            transition: transform 0.5s ease-in-out;
+        }
+        .slide {
+            min-width: 100%; /* Each slide takes full width */
+            box-sizing: border-box;
+        }
+        .slide img {
+            height: 500px; /* Height of slider images */
+            object-fit: cover; /* Ensures the image covers the area without distortion */
+        }
+        .prev, .next {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background-color: rgba(0, 0, 0, 0.5);
+            color: white;
+            border: none;
+            padding: 10px;
+            cursor: pointer;
+        }
+        .prev {
+            left: 10px;
+        }
+        .next {
+            right: 10px;
+        }
+        nav a {
+            font-size: 1.25rem; /* Increased font size for navigation links */
+            margin: 0 15px; /* Added space between navigation links */
+        }
+        .dropdown {
+            position: relative;
+            display: inline-block;
+        }
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: #f9f9f9;
+            min-width: 160px;
+            box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+            z-index: 1;
+        }
+        .dropdown-content a {
+            color: black;
+            padding: 12px 16px;
+            text-decoration: none;
+            display: block;
+        }
+        .dropdown-content a:hover {
+            background-color: #f1f1f1;
+        }
+        .dropdown:hover .dropdown-content {
+            display: block;
+        }
+        .product-card {
+            position: relative;
+            overflow: hidden; /* Ensures the image doesn't overflow */
+        }
+
+        .product-card img {
+            width: 100%; /* Ensure the image takes full width */
+            height: 200px; /* Set a fixed height for consistency */
+            transition: transform 0.3s ease; /* Transition for scaling effect */
+        }
+
+        .product-card:hover img {
+            transform: scale(1.1); /* Scale up the image on hover */
+        }
+
+        .add-to-cart {
+            transition: opacity 0.3s ease-in-out;
+            opacity: 0; /* Initially hidden */
+        }
+
+        .product-card:hover .add-to-cart {
+            opacity: 1; /* Show button on hover */
+        }
+    </style>
+</head>
+<body class="bg-white text-gray-800">
+    <!-- Main Banner -->
+    <section class="slider relative">
+        <div class="slides">
+            <div class="slide">
+                <img alt="Banner with perfume bottles and hearts" class="w-full" src="https://storage.googleapis.com/a1aa/image/DCztYU3niDGPcKW59kyBfcI04Xh2Q2vqy-WgHCQlDvA.jpg"/>
+                <div class="absolute inset-0 flex flex-col justify-center items-center text-center text-white">
+                    <h1 class="text-4xl font-bold">LOVE AT FIRST SNIFF</h1>
+                    <p class="text-2xl mt-2">UPTO 50% OFF SITEWIDE</p>
+                </div>
+            </div>
+            <div class="slide">
+                <img alt="Banner with perfume bottles and hearts" class="w-full" src="https://storage.googleapis.com/a1aa/image/DCztYU3niDGPcKW59kyBfcI04Xh2Q2vqy-WgHCQlDvA.jpg"/>
+                <div class="absolute inset-0 flex flex-col justify-center items-center text-center text-white">
+                    <h1 class="text-4xl font-bold">LOVE AT FIRST SNIFF</h1>
+                    <p class="text-2xl mt-2">UPTO 50% OFF SITEWIDE</p>
+                </div>
+            </div>
+            <div class="slide">
+                <img alt="Banner with perfume bottles and hearts" class="w-full" src="https://storage.googleapis.com/a1aa/image/DCztYU3niDGPcKW59kyBfcI04Xh2Q2vqy-WgHCQlDvA.jpg"/>
+                <div class="absolute inset-0 flex flex-col justify-center items-center text-center text-white">
+                    <h1 class="text-4xl font-bold">LOVE AT FIRST SNIFF</h1>
+                    <p class="text-2xl mt-2">UPTO 50% OFF SITEWIDE</p>
+                </div>
+            </div>
+        </div>
+        <button class="prev" onclick="moveSlide(-1)">❮</button>
+        <button class="next" onclick="moveSlide(1)">❯</button>
+    </section>
+
+    <div class="container mx-auto p-4">
+        <div class="flex flex-col lg:flex-row">
+            <!-- Filters Section -->
+            <div class="w-full lg:w-1/4 p-4">
+                <h2 class="text-2xl font-bold mb-4">Filters</h2>
+                <div class="mb-4">
+                    <h3 class="text-lg font-semibold mb-2">Availability</h3>
+                    <div class="border-t border-gray-300 mb-2 hidden"></div>
+                    <div class="ml-4">
+                        <label class="block mb-2">
+                            <input type="checkbox" class="mr-2"> 50ML
+                        </label>
+                        <label class="block mb-2">
+                            <input type="checkbox" class="mr-2"> 20ML
+                        </label>
+                        <label class="block mb-2">
+                            <input type="checkbox" class="mr-2"> In Stock
+                        </label>
+                        <label class="block mb-2">
+                            <input type="checkbox" class="mr-2"> Out of Stock
+                        </label>
+                    </div>
+                </div>
+                <div class="mb-4">
+                    <h3 class="text-lg font-semibold mb-2">Price</h3>
+                    <div class="border-t border-gray-300 mb-2 hidden"></div>
+                    <div class="ml-4">
+                        <label class="block mb-2">
+                            <input type="checkbox" class="mr-2"> Rs. 0 - Rs. 500
+                        </label>
+                        <label class="block mb-2">
+                            <input type="checkbox" class="mr-2"> Rs. 500 - Rs. 1000
+                        </label>
+                        <label class="block mb-2">
+                            <input type="checkbox" class="mr-2"> Rs. 1000 - Rs. 1500
+                        </label>
+                        <label class="block mb-2">
+                            <input type="checkbox" class="mr-2"> Rs. 1500 - Rs. 2000
+                        </label>
+                    </div>
+                </div>
+            </div>
+            <!-- Products Section -->
+            <div class="w-full lg:w-3/4 p-4">
+                <div class="flex justify-between items-center mb-4">
+                    <span class="text-lg">42 products</span>
+                    <div class="flex items-center">
+                        <span class="mr-2">Sort by</span>
+                        <select class="border border-gray-300 rounded p-2">
+                            <option>Alphabetically, A-Z</option>
+                            <option>Alphabetically, Z-A</option>
+                            <option>Price, low to high</option>
+                            <option>Price, high to low</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                    <!-- Product 1 -->
+                    <div class="border p-4 rounded-lg product-card relative">
+                        <img alt="Acqua-20M perfume bottle with citrus and pine elements" class="w-full h-48 object-cover mb-4" src="https://storage.googleapis.com/a1aa/image/6W25Lv8Euq3O1pLTnhFQSSxnw_QglDp5shXsJrGFLVo.jpg"/>
+                        <h3 class="text-lg font-semibold mb-2">Acqua-20M</h3>
+                        <p class="text-lg font-bold text-gray-900">Rs. 249.00 <span class="line-through text-gray-500">Rs. 799.00</span></p>
+                        <button class="mt-2 w-full bg-white border border-gray-300 text-gray-800 font-semibold py-2 rounded add-to-cart">+ Add to cart</button>
+                    </div>
+                    <!-- Product 2 -->
+                    <div class="border p-4 rounded-lg product-card relative">
+                        <img alt="Alfred Icon-20ML perfume bottle with floral and spice elements" class="w-full h-48 object-cover mb-4" src="https://storage.googleapis.com/a1aa/image/Fvu0Qw7cDZ_MGsrB_1Bsbj0xGKn1XkjPqP7mKGR5gSU.jpg"/>
+                        <h3 class="text-lg font-semibold mb-2">Alfred Icon-20ML</h3>
+                        <p class="text-lg font-bold text-gray-900">Rs. 249.00 <span class="line-through text-gray-500">Rs. 799.00</span></p>
+                        <button class="mt-2 w-full bg-white border border-gray-300 text-gray-800 font-semibold py-2 rounded add-to-cart">+ Add to cart</button>
+                    </div>
+                    <!-- Product 3 -->
+                    <div class="border p-4 rounded-lg product-card relative">
+                        <img alt="Aventus-20ML perfume bottle with citrus and floral elements" class="w-full h-48 object-cover mb-4" src="https://storage.googleapis.com/a1aa/image/SLP8iZjKtMEnYVPwWEGlrwePnDroQSaCJdHNGvDMCtk.jpg"/>
+                        <h3 class="text-lg font-semibold mb-2">Aventus-20ML</h3>
+                        <p class="text-lg font-bold text-gray-900">Rs. 249.00 <span class="line-through text-gray-500">Rs. 799.00</span></p>
+                        <button class="mt-2 w-full bg-white border border-gray-300 text-gray-800 font-semibold py-2 rounded add-to-cart">+ Add to cart</button>
+                    </div>
+                     <!-- Product 4-->
+                     <div class="border p-4 rounded-lg product-card relative">
+                        <img alt="Acqua-20M perfume bottle with citrus and pine elements" class="w-full h-48 object-cover mb-4" src="https://storage.googleapis.com/a1aa/image/6W25Lv8Euq3O1pLTnhFQSSxnw_QglDp5shXsJrGFLVo.jpg"/>
+                        <h3 class="text-lg font-semibold mb-2">Acqua-20M</h3>
+                        <p class="text-lg font-bold text-gray-900">Rs. 249.00 <span class="line-through text-gray-500">Rs. 799.00</span></p>
+                        <button class="mt-2 w-full bg-white border border-gray-300 text-gray-800 font-semibold py-2 rounded add-to-cart">+ Add to cart</button>
+                    </div>
+                    <!-- Product 5 -->
+                    <div class="border p-4 rounded-lg product-card relative">
+                        <img alt="Alfred Icon-20ML perfume bottle with floral and spice elements" class="w-full h-48 object-cover mb-4" src="https://storage.googleapis.com/a1aa/image/Fvu0Qw7cDZ_MGsrB_1Bsbj0xGKn1XkjPqP7mKGR5gSU.jpg"/>
+                        <h3 class="text-lg font-semibold mb-2">Alfred Icon-20ML</h3>
+                        <p class="text-lg font-bold text-gray-900">Rs. 249.00 <span class="line-through text-gray-500">Rs. 799.00</span></p>
+                        <button class="mt-2 w-full bg-white border border-gray-300 text-gray-800 font-semibold py-2 rounded add-to-cart">+ Add to cart</button>
+                    </div>
+                    <!-- Product 6 -->
+                    <div class="border p-4 rounded-lg product-card relative">
+                        <img alt="Aventus-20ML perfume bottle with citrus and floral elements" class="w-full h-48 object-cover mb-4" src="https://storage.googleapis.com/a1aa/image/SLP8iZjKtMEnYVPwWEGlrwePnDroQSaCJdHNGvDMCtk.jpg"/>
+                        <h3 class="text-lg font-semibold mb-2">Aventus-20ML</h3>
+                        <p class="text-lg font-bold text-gray-900">Rs. 249.00 <span class="line-through text-gray-500">Rs. 799.00</span></p>
+                        <button class="mt-2 w-full bg-white border border-gray-300 text-gray-800 font-semibold py-2 rounded add-to-cart">+ Add to cart</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container mx-auto px-4 py-8">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <!-- Subscribe Section -->
+            <div>
+                <h2 class="font-bold text-lg mb-4">SUBSCRIBE</h2>
+                <p class="mb-4">Subscribe to get special offers, free giveaways, and once-in-a-lifetime deals.</p>
+                <div class="flex items-center border rounded-lg overflow-hidden">
+                    <input type="email" placeholder="Your e-mail" class="flex-grow p-2 border-none outline-none">
+                    <button class="p-2 bg-white text-black">
+                        <i class="fas fa-arrow-right"></i>
+                    </button>
+                </div>
+            </div>
+            <!-- Perfume Section -->
+            <div>
+                <h2 class="font-bold text-lg mb-4">PERFUME</h2>
+                <ul>
+                    <li class="mb-2">Acqua</li>
+                    <li class="mb-2">Savage</li>
+                    <li class="mb-2">Blue Rush</li>
+                    <li class="mb-2">Aventus</li>
+                </ul>
+            </div>
+            <!-- Support Section -->
+            <div>
+                <h2 class="font-bold text-lg mb-4">SUPPORT</h2>
+                <ul>
+                    <li class="mb-2">Shipping Policy</li>
+                    <li class="mb-2">Refund Policy</li>
+                    <li class="mb-2">Terms and Condition</li>
+                    <li class="mb-2">Privacy Policy</li>
+                </ul>
+            </div>
+        </div>
+        <div class="mt-8 text-center text-sm">
+            <p>Rudra Perfumes &nbsp; &bull; &nbsp; Powered by Shopify</p>
+        </div>
+    </div>
+
+    <script>
+        let currentSlide = 0;
+        const slides = document.querySelectorAll('.slide');
+        const totalSlides = slides.length;
+
+        function showSlide(index) {
+            const slidesContainer = document.querySelector('.slides');
+            slidesContainer.style.transform = `translateX(-${index * 100}%)`;
+        }
+
+        function moveSlide(direction) {
+            currentSlide = (currentSlide + direction + totalSlides) % totalSlides;
+            showSlide(currentSlide);
+        }
+
+        // Automatic slide change every 5 seconds
+        setInterval(() => {
+            moveSlide(1);
+        }, 5000);
+    </script>
+</body>
+</html>
