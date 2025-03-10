@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>Paradise Perfumes - Product Details</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet"/>
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+        }
+        .sticky {
+            position: sticky;
+            top: 0;
+            background: white;
+            z-index: 10;
+            border-bottom: 1px solid #e5e7eb; /* Tailwind's gray-300 */
+        }
+    </style>
+</head>
+<body class="bg-white text-gray-800">
+    <header class="border-b">
+        <div class="container mx-auto flex justify-between items-center py-4 px-6">
+            <div class="text-2xl font-bold">RUUH PERFUMES</div>
+            <nav class="space-x-6">
+                <a class="text-gray-600 hover:text-black" href="#">HOME</a>
+                <a class="text-gray-600 hover:text-black" href="#">COLLECTIONS</a>
+                <a class="text-gray-600 hover:text-black" href="#">ORDER TESTERS</a>
+                <a class="text-gray-600 hover:text-black" href="#">OUD COLLECTION</a>
+                <a class="text-gray-600 hover:text-black" href="#">COMBO</a>
+                <a class="text-gray-600 hover:text-black" href="#">WINTER SALE</a>
+            </nav>
+        </div>
+    </header>
+    <main class="container mx-auto py-8 px-6">
+        <div class="flex flex-col lg:flex-row">
+            <div class="lg:w-1/3 flex flex-col items-center">
+                <img alt="Product Image" class="w-full mb-4" height="500" id="mainImage" src="" width="400"/>
+                <div class="flex space-x-2">
+                    <img alt="Thumbnail" class="w-20 h-20 border border-gray-300 cursor-pointer" onclick="changeImage('https://storage.googleapis.com/a1aa/image/mtrhUIACxpJHJJg19Z5rN6AnYgglW3ExkqWrKfFqeJs.jpg')" src="https://storage.googleapis.com/a1aa/image/mtrhUIACxpJHJJg19Z5rN6AnYgglW3ExkqWrKfFqeJs.jpg"/>
+                    <img alt="Thumbnail" class="w-20 h-20 border border-gray-300 cursor-pointer" onclick="changeImage('https://storage.googleapis.com/a1aa/image/6W25Lv8Euq3O1pLTnhFQSSxnw_QglDp5shXsJrGFLVo.jpg')" src="https://storage.googleapis.com/a1aa/image/6W25Lv8Euq3O1pLTnhFQSSxnw_QglDp5shXsJrGFLVo.jpg"/>
+                    <img alt="Thumbnail" class="w-20 h-20 border border-gray-300 cursor-pointer" onclick="changeImage('https://storage.googleapis.com/a1aa/image/Fvu0Qw7cDZ_MGsrB_1Bsbj0xGKn1XkjPqP7mKGR5gSU.jpg')" src="https://storage.googleapis.com/a1aa/image/Fvu0Qw7cDZ_MGsrB_1Bsbj0xGKn1XkjPqP7mKGR5gSU.jpg"/>
+                </div>
+            </div>
+            <div class="lg:w-2/3 lg:pl-12 mt-8 lg:mt-0">
+                <div class="sticky py-4">
+                    <h1 class="text-3xl font-bold" id="productName"></h1>
+                    <div class="text-xl text-red-600 mt-2" id="productPrice"></div>
+                    <div class="mt-4 flex items-center">
+                        <span class="mr-4">Quantity:</span>
+                        <div class="flex items-center border border-gray-300 rounded">
+                            <button class="px-3 py-1" onclick="updateQuantity(false)">-</button>
+                            <input class="w-12 text-center border-l border-r border-gray-300" id="quantityInput" type="text" value="1"/>
+                            <button class="px-3 py-1" onclick="updateQuantity(true)">+</button>
+                        </div>
+                    </div>
+                    <button class="mt-6 bg-black text-white px-6 py-3 rounded" onclick="addToCart()">ADD TO CART</button>
+                </div>
+                <p class="mt-4" id="productDescription"></p>
+                <div class="mt-8 flex space-x-8">
+                    <div class="text-center">
+                        <i class="fas fa-box-open text-2xl text-gray-600"></i>
+                        <div class="mt-2">Ordered</div>
+                        <div class="text-gray-500">Feb 20</div>
+                    </div>
+                    <div class="text-center">
+                        <i class="fas fa-truck text-2xl text-gray-600"></i>
+                        <div class="mt-2">Order ready</div>
+                        <div class="text-gray-500">Feb 20 - Feb 21</div>
+                    </div>
+                    <div class="text-center">
+                        <i class="fas fa-map-marker-alt text-2xl text-gray-600"></i>
+                        <div class="mt-2">Delivered</div>
+                        <div class="text-gray-500">Feb 22 - Feb 25</div>
+                    </div>
+                </div>
+                <div class="mt-8">
+                    <div class="border-t py-4">
+                        <button class="w-full text-left flex justify-between items-center" onclick="toggleDetails('productDetails')">
+                            <span class="font-medium">Product Details</span>
+                            <i class="fas fa-chevron-down"></i>
+                        </button>
+                        <div id="productDetails" class="hidden mt-2 text-gray-600">
+                            This perfume is crafted with the finest ingredients, ensuring a long-lasting scent that captivates the senses.
+                        </div>
+                    </div>
+                    <div class="border-t py-4">
+                        <button class="w-full text-left flex justify-between items-center" onclick="toggleDetails('shippingReturn')">
+                            <span class="font-medium">Shipping &amp; Return</span>
+                            <i class="fas fa-chevron-down"></i>
+                        </button>
+                        <div id="shippingReturn" class="hidden mt-2 text-gray-600">
+                            We offer free shipping on orders over Rs. 500. Returns are accepted within 30 days of purchase.
+                        </div>
+                    </div>
+                    <div class="border-t py-4">
+                        <button class="w-full text-left flex justify-between items-center" onclick="toggleDetails('satisfactionGuarantee')">
+                            <span class="font-medium">100% Satisfaction Guarantee</span>
+                            <i class="fas fa-chevron-down"></i>
+                        </button>
+                        <div id="satisfactionGuarantee" class="hidden mt-2 text-gray-600">
+                            If you are not satisfied with your purchase, you can return it for a full refund within 30 days.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Best Selling Combinations Section -->
+        <div class="mt-12">
+            <h2 class="text-2xl font-bold mb-4">Best Selling Combinations</h2>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div class="border rounded-lg overflow-hidden">
+                    <img class="w-full h-48 object-cover" src="https://storage.googleapis.com/a1aa/image/6W25Lv8Euq3O1pLTnhFQSSxnw_QglDp5shXsJrGFLVo.jpg" alt="Combination 1"/>
+                    <div class="p-4">
+                        <h3 class="font-bold">Combination 1</h3>
+                        <p class="text-gray-600">Includes Acqua and Coco.</p>
+                        <div class="text-red-600">Rs. 449.00</div>
+                    </div>
+                </div>
+                <div class="border rounded-lg overflow-hidden">
+                    <img class="w-full h-48 object-cover" src="https://storage.googleapis.com/a1aa/image/Fvu0Qw7cDZ_MGsrB_1Bsbj0xGKn1XkjPqP7mKGR5gSU.jpg" alt="Combination 2"/>
+                    <div class="p-4">
+                        <h3 class="font-bold">Combination 2</h3>
+                        <p class="text-gray-600">Includes Alfred Icon and Aventus.</p>
+                        <div class="text-red-600">Rs. 499.00</div>
+                    </div>
+                </div>
+                <div class="border rounded-lg overflow-hidden">
+                    <img class="w-full h-48 object-cover" src="https://storage.googleapis.com/a1aa/image/mtrhUIACxpJHJJg19Z5rN6AnYgglW3ExkqWrKfFqeJs.jpg" alt="Combination 3"/>
+                    <div class="p-4">
+                        <h3 class="font-bold">Combination 3</h3>
+                        <p class="text-gray-600">Includes Coco and Acqua.</p>
+                        <div class="text-red-600">Rs. 399.00</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        const products = [
+            { id: 1, name: "Acqua-20M", price: "Rs. 249.00", image: "https://storage.googleapis.com/a1aa/image/6W25Lv8Euq3O1pLTnhFQSSxnw_QglDp5shXsJrGFLVo.jpg", description: "A refreshing scent with citrus and pine elements." },
+            { id: 2, name: "Alfred Icon-20ML", price: "Rs. 249.00", image: "https://storage.googleapis.com/a1aa/image/Fvu0Qw7cDZ_MGsrB_1Bsbj0xGKn1XkjPqP7mKGR5gSU.jpg", description: "A floral and spicy fragrance." },
+            { id: 3, name: "Aventus-20ML", price: "Rs. 249.00", image: "https://storage.googleapis.com/a1aa/image/SLP8iZjKtMEnYVPwWEGlrwePnDroQSaCJdHNGvDMCtk.jpg", description: "A bold scent with citrus and floral notes." },
+            { id: 4, name: "Coco-20ML", price: "Rs. 249.00", image: "https://storage.googleapis.com/a1aa/image/mtrhUIACxpJHJJg19Z5rN6AnYgglW3ExkqWrKfFqeJs.jpg", description: "A luxurious scent with floral and citrus notes." }
+        ];
+
+        const selectedProductId = localStorage.getItem("selectedProduct");
+        const selectedProduct = products.find(p => p.id == selectedProductId);
+
+        if (selectedProduct) {
+            document.getElementById("mainImage").src = selectedProduct.image;
+            document.getElementById("productName").innerText = selectedProduct.name;
+            document.getElementById(" productPrice").innerText = selectedProduct.price;
+            document.getElementById("productDescription").innerText = selectedProduct.description;
+        }
+
+        function changeImage(src) {
+            document.getElementById('mainImage').src = src;
+        }
+
+        function updateQuantity(increment) {
+            const quantityInput = document.getElementById('quantityInput');
+            let currentQuantity = parseInt(quantityInput.value);
+            if (increment) {
+                currentQuantity += 1;
+            } else {
+                if (currentQuantity > 1) {
+                    currentQuantity -= 1;
+                }
+            }
+            quantityInput.value = currentQuantity;
+        }
+
+        function addToCart() {
+            const quantity = document.getElementById('quantityInput').value;
+            alert(`Added ${quantity} item(s) to cart`);
+        }
+
+        function toggleDetails(id) {
+            const details = document.getElementById(id);
+            details.classList.toggle('hidden');
+        }
+    </script>
+</body>
+</html>

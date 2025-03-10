@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Upload Product</title>
+</head>
+<body>
+    <form action="upload_image.php" method="POST" enctype="multipart/form-data">
+        <label for="product_name">Product Name:</label>
+        <input type="text" name="product_name" id="product_name" required><br><br>
+
+        <label for="product_id">Product ID:</label>
+        <input type="number" name="product_id" id="product_id" required><br><br>
+
+        <label for="product_size">Product Size:</label>
+        <input type="text" name="product_size" id="product_size" required><br><br>
+
+        <label for="product_type">Product Type:</label>
+        <input type="text" name="product_type" id="product_type" required><br><br>
+
+        <label for="product_version">Product Version:</label>
+        <input type="text" name="product_version" id="product_version" required><br><br>
+
+        <label for="selling_price">Selling Price:</label>
+        <input type="number" name="selling_price" id="selling_price" step="0.01" required><br><br>
+
+        <label for="courrier_charges">Courier Charges:</label>
+        <input type="number" name="courrier_charges" id="courrier_charges" step="0.01" required><br><br>
+
+        <label for="display_price">Display Price:</label>
+        <input type="number" name="display_price" id="display_price" step="0.01" required><br><br>
+
+        <label for="product_description">Product Description:</label>
+        <textarea name="product_description" id="product_description" required></textarea><br><br>
+
+        <label for="product_image">Product Image:</label>
+        <input type="file" name="product_image" id="product_image" required><br><br>
+
+        <label for="product_nodes_information">Product Nodes Information:</label>
+        <textarea name="product_nodes_information" id="product_nodes_information" required></textarea><br><br>
+
+        <label for="additional_information">Additional Information:</label>
+        <textarea name="additional_information" id="additional_information" required></textarea><br><br>
+
+        <input type="submit" name="submit" value="Upload Product">
+    </form>
+</body>
+</html>
