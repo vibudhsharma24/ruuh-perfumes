@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ADD NEW PRODUCT</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-image: url('https://images.unsplash.com/photo-1517841905240-4729888e0c0d?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=MnwxMTc3M3wwfDF8c2VhcmNofDF8fGJhY2tncm91bmR8ZW58MHx8fHwxNjYyMjY1NzY0&ixlib=rb-1.2.1&q=80&w=1080');
+            background-size: cover;
+            background-position: center;
+            color: #333;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 30px auto;
+            background: rgba(255, 255, 255, 0.9);
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+        }
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+            color: #28a745;
+        }
+        .form-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); /* Responsive layout */
+            gap: 15px; /* General gap between fields */
+        }
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+        label {
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        input, select, textarea {
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            background: #fff;
+            color: #333;
+            transition: border 0.3s;
+            min-width: 150px; /* Set a minimum width for inputs */
+        }
+        input:focus, select:focus, textarea:focus {
+            border-color: #28a745;
+            padding: 8px;
+            outline: none;
+        }
+        .notes-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px; /* Increased gap between notes */
+        }
+        .note {
+            display: flex;
+            align-items: center;
+            background: #28a745;
+            color: white;
+            padding: 3px 5px;
+            border-radius: 5px;
+        }
+        .note span {
+            cursor: pointer;
+            margin-left: 5px;
+            font-weight: bold;
+        }
+        button {
+            font-size: 16px;
+            background-color: #eb7521;  /* Default button color */
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background 0.3s;
+            display: block;
+            margin: 10px auto;  /* Center the button */
+        }
+        .notes-button {
+            background-color: #ff9800;  /* Change button color for notes */
+        }
+        button:hover {
+            background-color: #218838; /* Darker shade on hover */
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>ADD NEW PRODUCT</h1>
+        <form action="upload_image.php" method="POST" enctype="multipart/form-data">
+            <div class="form-container">
+                <div class="form-group">
+                    <label for="product_name">Product Name:</label>
+                    <input type="text" name="product_name" id="product_name" required placeholder="Enter product name">
+                </div>
+                <div class="form-group">
+                    <label for="product_id">Product ID:</label>
+                    <input type="text" id="product_id" name="product_id" pattern="[A-Za-z0-9]+" title="Only alphanumeric values allowed " required placeholder="Enter product id">
+                </div>
+                <div class="form-group">
+                    <label for="product_size">Product Size:</label>
+                    <select name="product_size" id="product_size" required>
+                        <option value="50 ml">50 ML</option>
+                        <option value="100 ml">100 ML</option>
+                        <option value="120 ml">120 ML</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="product_type">Product Type:</label>
+                    <select name="product_type" id="product_type" required>
+                        <option value="perfume">Perfume</option>
+                        <option value="attar">Attar</option>
+                        <option value="deodorants">Deodorants</option>
+                        <option value="essence oil">Essence Oil</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="product_version">Product Version:</label>
+                    <select name="product_version" id="product_version" required>
+                        <option value="inspired">Inspired</option>
+                        <option value="original">Original</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="product_gender">Gender</label>
+                    <select name="product_gender" id="product_gender" required>
+                        <option value="mens">For Men's</option>
+                        <option value="womens">For women's</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="purchase_date">Date of Purchase:</label>
+                    <input type="date" id="purchase_date" name="purchase_date" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="lot_number">No. of Lots:</label>
+                    <input type="number" id="lot_number" name="lot_number" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="selling_price">Selling Price:</label>
+                    <input type="number" name="selling_price" id="selling_price" min="0" step="1" required placeholder="Enter selling price">
+                </div>
+                <div class="form-group">
+                    <label for="crossed_price">Crossed Price:</label>
+                    <input type="number" name="crossed_price" id="crossed_price" min="0" step="1"required>
+                </div>
+                <div class="form-group">
+                    <label for="product_image">Product Image:</label>
+                    <input type="file" name="product_image" id="product_image" accept="image/*" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="additional_images">Additional Product Images</label>
+                    <input type="file" name="additional_images[]" id="additional_images" multiple accept="image/*" onchange="previewImages()">
+                    <div class="image-preview" id="image-preview"></div>
+                </div>
+                
+                <!-- Top Notes -->
+                <div class="form-group">
+                    <label style="margin-bottom: 0;">Top Notes:</label>
+                    <div class="notes-container" id="top-notes-container"></div>
+                    <div style="display: flex; align-items: center; gap: 5px; ">
+                        <input type="text" id="top-note-input" placeholder="Enter a note" style="margin-top: 1px;">
+                        <button type="button" onclick="addNote('top-note-input', 'top-notes-container', 'top_notes_hidden')">Add Note</button>
+                    </div>
+                    <input type="hidden" name="top_notes" id="top_notes_hidden">
+                </div>
+
+                <!-- Middle Notes -->
+                <div class="form-group">
+                    <label style="margin-bottom: 0;">Middle Notes:</label>
+                    <div class="notes-container" id="middle-notes-container"></div>
+                    <div style="display: flex; align-items: center; gap: 5px;">
+                        <input type="text" id="middle-note-input" placeholder="Enter a note" style="margin-top: 1px;">
+                        <button type="button" onclick="addNote('middle-note-input', 'middle-notes-container', 'middle_notes_hidden')">Add Note</button>
+                    </div>
+                    <input type="hidden" name="middle_notes" id="middle_notes_hidden">
+                </div>
+                
+                <!-- Base Notes -->
+                <div class="form-group">
+                    <label style="margin-bottom: 0;">Base Notes:</label>
+                    <div class="notes-container" id="base-notes-container"></div>
+                    <div style="display: flex; align-items: center; gap: 5px;">
+                        <input type="text" id="base-note-input" placeholder="Enter a note" style="margin-top: 1px;">
+                        <button type="button" onclick="addNote('base-note-input', 'base-notes-container', 'base_notes_hidden')">Add Note</button>
+                    </div>
+                    <input type="hidden" name="base_notes" id="base_notes_hidden">
+                </div>
+                
+                <div class="form-group">
+                    <label for="product_category">select product category:</label>
+                    <select name="product_category" id="product_category" >
+                        <option value="bestseller">Best seller</option>
+                        <option value="newarrival">New arrival</option>
+                        <option value="original">None</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="product_description">Product Description:</label>
+                    <textarea name="product_description" id="product_description" required></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="additional_information">Additional Information:</label>
+                    <textarea name="additional_information" id="additional_information" required></textarea>
+                </div>
+                <div style="display: flex; justify-content: flex-end;">
+                    <button type="submit" name="submit">Upload Product</button>
+                </div>
+                
+            </div>
+        </form>
+    </div>
+    
+    <script>
+        // Function to add a note to the respective container and store in hidden fields
+        function addNote(inputId, containerId, hiddenInputId) {
+            var noteInput = document.getElementById(inputId);
+            var noteValue = noteInput.value.trim();
+            if (noteValue) {
+                var container = document.getElementById(containerId);
+                var noteElement = document.createElement("div");
+                noteElement.classList.add("note");
+                noteElement.innerHTML = noteValue + ' <span onclick="removeNote(this)">x</span>';
+                container.appendChild(noteElement);
+
+                // Add the note to the hidden input field
+                var hiddenInput = document.getElementById(hiddenInputId);
+                var existingNotes = hiddenInput.value ? hiddenInput.value.split(',') : [];
+                existingNotes.push(noteValue);
+                hiddenInput.value = existingNotes.join(',');
+                
+                noteInput.value = '';  // Clear the input field after adding the note
+            }
+        }
+
+        // Function to remove a note
+        function removeNote(noteElement) {
+            var noteValue = noteElement.parentElement.textContent.replace('x', '').trim();
+            noteElement.parentElement.remove();
+
+            // Remove the note from the hidden input field
+            updateHiddenNotes('top_notes_hidden', 'top-notes-container');
+            updateHiddenNotes('middle_notes_hidden', 'middle-notes-container');
+            updateHiddenNotes('base_notes_hidden', 'base-notes-container');
+        }
+
+        // Function to update hidden input fields with the current notes
+        function updateHiddenNotes(hiddenInputId, containerId) {
+            var container = document.getElementById(containerId);
+            var notes = [];
+            var noteElements = container.getElementsByClassName('note');
+            for (var i = 0; i < noteElements.length; i++) {
+                notes.push(noteElements[i].textContent.replace('x', '').trim());
+            }
+            document.getElementById(hiddenInputId).value = notes.join(',');
+        }
+
+        // Attach event listeners to note input fields to add notes
+        document.getElementById('top-note-input').addEventListener('keypress', function (e) {
+            if (e.key === 'Enter') {
+                addNote('top-note-input', 'top-notes-container', 'top_notes_hidden');
+            }
+        });
+        document.getElementById('middle-note-input').addEventListener('keypress', function (e) {
+            if (e.key === 'Enter') {
+                addNote('middle-note-input', 'middle-notes-container', 'middle_notes_hidden');
+            }
+        });
+        document.getElementById('base-note-input').addEventListener('keypress', function (e) {
+            if (e.key === 'Enter') {
+                addNote('base-note-input', 'base-notes-container', 'base_notes_hidden');
+            }
+        });
+
+        // Ensure notes are updated before form submission
+        document.querySelector('form').addEventListener('submit', function () {
+            updateHiddenNotes('top_notes_hidden', 'top-notes-container');
+            updateHiddenNotes('middle_notes_hidden', 'middle-notes-container');
+            updateHiddenNotes('base_notes_hidden', 'base-notes-container');
+        });
+    </script>
+</body>
+</html>

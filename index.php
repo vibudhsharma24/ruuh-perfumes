@@ -93,59 +93,196 @@ $user_name = $_SESSION['user_name'];
         .hidden {
             display: none;
         }
+        .hello{
+            width: 8vw;
+            color: red;
+            font-weight: bold;
+        }
+
+        
+.product-card {
+    position: relative;
+    overflow: hidden;
+    transition: background-color 0.3s ease;
+    background: white;
+    padding: 15px;
+    border-radius: 12px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    width: 100%;
+    margin: 10px auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    flex: 1 1 calc(25% - 20px); /* 25% width for 4 items per row */
+    max-width: 250px;
+}
+
+
+
+.product-container {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr); /* Ensures 4 items per row */
+    gap: 20px; /* Adjust spacing */
+    justify-content: start; /* Align items to the left */
+}
+
+
+
+.product-card img {
+    margin-top: 10px;
+    width: 100vw;
+    height: 30vh;
+    object-fit: cover;
+    border-radius: 8px;
+    transition: transform 0.3s ease;
+    cursor: pointer;
+}
+
+/* Hover Effect */
+.product-card:hover img {
+    transform: scale(1.05);
+}
+
+.product-card:hover {
+    background-color: rgba(240, 240, 240, 0.5);
+}
+
+/* Price Styling */
+.product-price {
+    font-size: 18px;
+    font-weight: bold;
+    margin-top: 10px;
+}
+
+.crossed-price {
+    text-decoration: line-through;
+    color: red;
+    font-size: 16px;
+    margin-left: 5px;
+}
+.product-size{
+    margin-left: 20px;
+    font-weight:normal;
+    font-size: 1rem;
+}
+
+/* Add to Cart Button */
+.add-to-cart {
+    width: 90%;
+    background-color: #ff5f5f;
+    color: white;
+    border: none;
+    padding: 12px;
+    font-size: 16px;
+    font-weight: bold;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background 0.3s ease-in-out, opacity 0.3s ease-in-out;
+    margin-top: 12px;
+    opacity: 1;
+}
+
+/* Hover effect for button */
+.add-to-cart:hover {
+    background-color: #e04e4e;
+}
+
+/* Filter & Product Sections */
+.filter-section {
+    position: sticky;
+    top: 0;
+    background: white;
+    z-index: 10;
+    padding: 1rem;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    height: 100vh;
+    overflow-y: auto;
+}
+
+.product-section {
+    height: 100vh;
+    overflow-y: auto;
+}
+
+/* Hidden Elements */
+.hidden {
+    display: none;
+}
+
+/* Cart */
+.cart {
+    width: 400px; /* Increased width of the cart */
+}
+
     </style>
 </head>
 <body class="bg-white text-black">
     <div class="text-3xl font-bold text-center py-2 px-4">RUDRA</div>
+
     <!-- Header -->
     <header class="border-b border-gray-200">
-        <div class="container flex justify-between items-center py-4 px-6">
-            <div>
-                <img src="IMG/logo.png" alt="RUDRA Logo" class="h-14"> 
-            </div>
-            <nav class="space-x-8">
-                <a class="text-black hover:underline" href="#">HOME</a>
-                <div class="dropdown">
-                    <a class="nav-link font-semibold text-gray-800 hover:text-gray-600 cursor-pointer">COLLECTIONS</a>
-                    <div class="dropdown-content">
-                        <div class="dropdown-submenu">
-                            <a class="cursor-pointer" onmouseover="showPerfumesSubmenu()" onmouseout="hidePerfumesSubmenu()">Perfumes</a>
-                            <div class="dropdown-content hidden" id="perfumes-submenu">
-                                <a href="#him">Him</a>
-                                <a href="#her">Her</a>
-                                <a href="#unisex">Unisex</a>
-                            </div>
-                        </div>
-                        <a href="#">Attar</a>
-                    </div>
-                </div>
-                <a class="text-black hover:underline" href="#">ORDER TESTERS</a>
-                <a class="text-black hover:underline" href="#">OUD COLLECTION</a>
-                <a class="text-black hover:underline" href="#">COMBO</a>
-                <a class="text-black hover:underline" href="#">WINTER SALE</a>
-            </nav>
-            <nav class=" items-center justify-between border-b">
-                <div class="flex items-center ">
-                    <a href="search.html" class=" flex items-center">
-                        <i class="fas fa-search text-xl"></i>
-                        <span class="absolute top-8 left-1/2 transform -translate-x-1/2 opacity-0 group-hover:opacity-100 transition bg-white text-gray-800 px-2 py-1 rounded shadow-md text-sm">SEARCH</span>
-                    </a>
-                    <a href="login.php" class="relative group flex items-center">
-                        <i class="fas fa-user text-s cursor-pointer"></i>
-                        <div class="flex items-center">
-                            <!-- Display the user's name here -->
-                            <p class="w-10">Hello, <?php echo htmlspecialchars($user_name); ?>!</p>
-                            <a href="logout.php" class="text-sm text-blue-600 hover:underline">Log Out</a>
-                        </div>
-                    </a>
-                    <a href="cart.html" class="relative group flex items-center">
-                        <i class="fas fa-shopping-bag text-2xl cursor-pointer"></i>
-                        <span class="absolute top-8 left-1/2 transform -translate-x-1/2 opacity-0 group-hover:opacity-100 transition bg-white text-gray-800 px-2 py-1 rounded shadow-md text-sm">Cart</span>
-                    </a>
-                </div>
-            </nav>
+    <div class="container flex justify-between items-center py-4 px-6">
+        <!-- Logo -->
+        <div>
+            <img src="IMG/logo.png" alt="RUDRA Logo" class="h-14 w-14"> 
         </div>
-    </header>
+
+        <!-- Main Navigation -->
+        <nav class="space-x-4 flex">
+            <a class="text-black hover:underline" href="#">HOME</a>
+            <div class="dropdown relative">
+                <a class="nav-link font-semibold text-gray-800 hover:text-gray-600 cursor-pointer">COLLECTIONS</a>
+                <div class="dropdown-content absolute left-0 mt-2 bg-white border border-gray-300 shadow-lg hidden">
+                    <div class="dropdown-submenu relative">
+                        <a class="cursor-pointer block px-4 py-2 hover:bg-gray-100" onmouseover="showPerfumesSubmenu()" onmouseout="hidePerfumesSubmenu()">Perfumes</a>
+                        <div class="dropdown-content hidden absolute left-full top-0 bg-white border border-gray-300 shadow-lg" id="perfumes-submenu">
+                            <a href="#him" class="block px-4 py-2 hover:bg-gray-100">Him</a>
+                            <a href="#her" class="block px-4 py-2 hover:bg-gray-100">Her</a>
+                            <a href="#unisex" class="block px-4 py-2 hover:bg-gray-100">Unisex</a>
+                        </div>
+                    </div>
+                    <a href="#" class="block px-4 py-2 hover:bg-gray-100">Attar</a>
+                </div>
+            </div>
+            <a class="text-black hover:underline" href="#">ORDER TESTERS</a>
+            <a class="text-black hover:underline" href="#">OUD COLLECTION</a>
+            <a class="text-black hover:underline" href="#">COMBO</a>
+            <a class="text-black hover:underline" href="#">WINTER SALE</a>
+        </nav>
+
+        <!-- Right-side Nav (Search, User, Cart) - FIXED -->
+        <nav class="flex items-center space-x-6 ml-auto">
+            <!-- Search -->
+            <a href="search.html" class="relative group">
+                <i class="fas fa-search text-xl"></i>
+                <div class="absolute top-8 left-1/2 transform -translate-x-1/2 opacity-0 group-hover:opacity-100 transition bg-white text-gray-800 px-2 py-1 rounded shadow-md text-sm">
+                    SEARCH
+                </div>
+            </a>
+
+            <!-- User Login Section -->
+            <a href="login.php" class="relative group flex items-center space-x-2">
+                <i class="fas fa-user text-xl cursor-pointer"></i>
+                <div class="flex items-center space-x-2">
+                    <p class="text-sm font-medium">Hello, <?php echo htmlspecialchars($user_name); ?>!</p>
+                    <a href="logout.php" class="text-sm text-blue-600 hover:underline">Log Out</a>
+                </div>
+            </a>
+
+            <!-- Cart -->
+            <a href="cart.html" class="relative group">
+                <i class="fas fa-shopping-bag text-2xl cursor-pointer"></i>
+                <div class="absolute top-8 left-1/2 transform -translate-x-1/2 opacity-0 group-hover:opacity-100 transition bg-white text-gray-800 px-2 py-1 rounded shadow-md text-sm">
+                    Cart
+                </div>
+            </a>
+        </nav>
+    </div>
+</header>
+
+</body>
+
     <!-- Main Banner -->
     <section class="slider relative">
         <div class="slides">
@@ -230,79 +367,73 @@ $user_name = $_SESSION['user_name'];
      <!-- Best Selling Section -->
      <section class="container mx-auto py-12 px-6">
         <h1 class="text-3xl font-bold text-center mb-8">BEST SELLING</h1>
-        <div class="flex justify-center space-x-4">
-            <!-- Product 1 -->
-            <div class="text-center w-80">
-                <div class="relative inline-block transition-transform transform hover:scale-105 hover:shadow-lg">
-                    <span class="absolute top-0 left-0 bg-black text-white text-xs font-bold px-2 py-1">SAVE 63%</span>
-                    <img alt="King Khan's Combination perfume bottles with ingredients" class="w-full h-auto" height="200" src="https://storage.googleapis.com/a1aa/image/ZJUIhhZ9fslenHJ_NEzv_psggbWkNrv0cJemvOzOevM.jpg" width="200"/>
-                </div>
-                <h2 class="text-lg font-bold mt-4 King Khan's Combination</h2>
-                <p class="text-blue-600 font-bold">Rs. 1,499.00 <span class="line-through text-gray-500">Rs. 3,999.00</span></p>
-                <p class="text-yellow-500">
-                    <i class="fas fa-star"></i>
-                    <i class="fas fa-star"></i>
-                    <i class="fas fa-star"></i>
-                    <i class="fas fa-star"></i>
-                    <i class="fas fa-star-half-alt"></i>
-                    47 reviews
-                </p>
-                <button class="bg-black text-white font-bold py-2 px-4 mt-4">+ ADD TO CART</button>
-            </div>
-            <!-- Product 2 -->
-            <div class="text-center w-80">
-                <div class="relative inline-block transition-transform transform hover:scale-105 hover:shadow-lg">
-                    <span class="absolute top-0 left-0 bg-black text-white text-xs font-bold px-2 py-1">SAVE 58%</span>
-                    <img alt="Blue Rush perfume bottle with notes description" class="w-full h-auto" height="200" src="https://storage.googleapis.com/a1aa/image/dYQRos_uSptChbBqRrUPzvH9O4nFC3qH3UR69jIya4A.jpg" width="200"/>
-                </div>
-                <h2 class="text-lg font-bold mt-4">Blue Rush</h2>
-                <p class="text-blue-600 font-bold">Rs. 849.00 <span class="line-through text-gray-500">Rs. 1,999.00</span></p>
-                <p class="text-yellow-500">
-                    <i class="fas fa-star"></i>
-                    <i class="fas fa-star"></i>
-                    <i class="fas fa-star"></i>
-                    <i class="fas fa-star"></i>
-                    <i class="fas fa-star-half-alt"></i>
-                    80 reviews
-                </p>
-                <button class="bg-black text-white font-bold py-2 px-4 mt-4">+ ADD TO CART</button>
-            </div>
-            <!-- Product 3 -->
-            <div class="text-center w-80">
-                <div class="relative inline-block transition-transform transform hover:scale-105 hover:shadow-lg">
-                    <span class="absolute top-0 left-0 bg-black text-white text-xs font-bold px-2 py-1">SAVE 58%</span>
-                    <img alt="Savage perfume bottle with ingredients" class="w-full h-auto" height="200" src="https://storage.googleapis.com/a1aa/image/fvyS3veDtGmS5_WiRPDxoJkRDDjV7EYwbPBIw8M6vLI.jpg" width="200"/>
-                </div>
-                <h2 class="text-lg font-bold mt-4">Savage</h2>
-                <p class="text-blue-600 font-bold">Rs. 849.00 <span class="line-through text-gray-500">Rs. 1,999.00</span></p>
-                <p class="text-yellow-500">
-                    <i class="fas fa-star"></i>
-                    <i class="fas fa-star"></i>
-                    <i class="fas fa-star"></i>
-                    <i class="fas fa-star"></i>
-                    <i class="fas fa-star-half-alt"></i>
-                    86 reviews
-                </p>
-                <button class="bg-black text-white font-bold py-2 px-4 mt-4">+ ADD TO CART</button>
-            </div>
-            <!-- Product 4 -->
-            <div class="text-center w-80">
-                <div class="relative inline-block transition-transform transform hover:scale-105 hover:shadow-lg">
-                    <span class="absolute top-0 left-0 bg-black text-white text-xs font-bold px-2 py-1">SAVE 58%</span>
-                    <img alt="Aventus perfume bottle with ingredients" class="w-full h-auto" height="200" src="https://storage.googleapis.com/a1aa/image/cnvPrtNwjNWPAz2vYVfKUS5DHm6rDK-ILUomNtIlFFk.jpg" width="200"/>
-                </div>
-                <h2 class="text-lg font-bold mt-4">Aventus</h2>
-                <p class="text-blue-600 font-bold">Rs. 849.00 <span class="line-through text-gray-500">Rs. 1,999.00</span></p>
-                <p class="text-yellow-500">
-                    <i class="fas fa-star"></i <i class="fas fa-star"></i>
-                    <i class="fas fa-star"></i>
-                    <i class="fas fa-star"></i>
-                    <i class="fas fa-star-half-alt"></i>
-                    47 reviews
-                </p>
-                <button class="bg-black text-white font-bold py-2 px-4 mt-4">+ ADD TO CART</button>
-            </div>
-        </div>
+        <?php
+            $servername = "localhost";
+            $username = "root";
+            $password = "";
+            $dbname = "perfumes";
+
+            $conn = new mysqli($servername, $username, $password, $dbname);
+
+            if ($conn->connect_error) {
+                die("Connection failed: " . $conn->connect_error);
+            }
+
+            // Fetch 4 random products where product_category = 'bestsellers'
+            $query = "SELECT product_id, product_name, product_image, selling_price, crossed_price, product_size 
+                    FROM product_details 
+                    WHERE product_category = 'bestseller' 
+                    ORDER BY RAND() 
+                    LIMIT 4";
+
+            $result = $conn->query($query);
+
+            if ($result->num_rows > 0) {
+                // echo "<h1 style='text-align: center;'>Bestsellers</h1>";
+                echo "<div class='product-container'>";
+
+                while ($row = $result->fetch_assoc()) {
+                    $product_id = $row['product_id'];
+                    $product_name = $row['product_name'];
+                    $image_name = $row['product_image'];
+                    $selling_price = $row['selling_price'];
+                    $crossed_price = $row['crossed_price'];
+                    $product_size = $row['product_size']; 
+
+                    // Make sure image exists
+                    $image_path = !empty($image_name) && file_exists("uploads/" . $image_name) ? "uploads/$image_name" : 'path/to/default/image.jpg';
+
+                    echo "<div class='product-card'>";
+                    echo "<h3 class='product-name'>$product_name</h3>";
+
+                    // Display product image
+                    echo "<a href='product_inside.php?product_id=$product_id'>
+                            <img src='$image_path' alt='$product_name' class='product-image' />
+                        </a>";
+
+                    // Display prices with size
+                    echo "<p class='product-price'>
+                            <strong>₹$selling_price</strong> 
+                            <span class='crossed-price'>₹$crossed_price</span>
+                            <span class='product-size'> ($product_size ml)</span>
+                        </p>";
+
+                    // Add to Cart button
+                    echo "<button class='add-to-cart' 
+                                onclick='addToCart(this, \"$product_name\", \"$image_path\", $selling_price, $crossed_price, \"$product_size\", $product_id)'>
+                                + Add to cart
+                        </button>";
+
+                    echo "</div>";
+                }
+
+                echo "</div>";
+            } else {
+                echo "<p style='text-align: center;'>No bestsellers found.</p>";
+            }
+
+            $conn->close();
+            ?>
     </section>
     <body class="bg-white">
         <div class="container mx-auto py-8">
@@ -360,80 +491,198 @@ $user_name = $_SESSION['user_name'];
     <section class="container mx-auto py-12 px-6">
         <h1 class="text-3xl font-bold text-center mb-8">NEW ARRIVAL</h1>
         <div class="flex justify-center space-x-4">
-            <!-- Product 1 -->
-            <div class="text-center w-80">
-                <div class="relative inline-block transition-transform transform hover:scale-105 hover:shadow-lg">
-                    <span class="absolute top-0 left-0 bg-black text-white text-xs font-bold px-2 py-1">SAVE 63%</span>
-                    <img alt="King Khan's Combination perfume bottles with ingredients" class="w-full h-auto" height="200" src="https://storage.googleapis.com/a1aa/image/ZJUIhhZ9fslenHJ_NEzv_psggbWkNrv0cJemvOzOevM.jpg" width="200"/>
-                </div>
-                <h2 class="text-lg font-bold mt-4 King Khan's Combination</h2>
-                <p class="text-blue-600 font-bold">Rs. 1,499.00 <span class="line-through text-gray-500">Rs. 3,999.00</span></p>
-                <p class="text-yellow-500">
-                    <i class="fas fa-star"></i>
-                    <i class="fas fa-star"></i>
-                    <i class="fas fa-star"></i>
-                    <i class="fas fa-star"></i>
-                    <i class="fas fa-star-half-alt"></i>
-                    47 reviews
-                </p>
-                <button class="bg-black text-white font-bold py-2 px-4 mt-4">+ ADD TO CART</button>
-            </div>
-            <!-- Product 2 -->
-            <div class="text-center w-80">
-                <div class="relative inline-block transition-transform transform hover:scale-105 hover:shadow-lg">
-                    <span class="absolute top-0 left-0 bg-black text-white text-xs font-bold px-2 py-1">SAVE 58%</span>
-                    <img alt="Blue Rush perfume bottle with notes description" class="w-full h-auto" height="200" src="https://storage.googleapis.com/a1aa/image/dYQRos_uSptChbBqRrUPzvH9O4nFC3qH3UR69jIya4A.jpg" width="200"/>
-                </div>
-                <h2 class="text-lg font-bold mt-4">Blue Rush</h2>
-                <p class="text-blue-600 font-bold">Rs. 849.00 <span class="line-through text-gray-500">Rs. 1,999.00</span></p>
-                <p class="text-yellow-500">
-                    <i class="fas fa-star"></i>
-                    <i class="fas fa-star"></i>
-                    <i class="fas fa-star"></i>
-                    <i class="fas fa-star"></i>
-                    <i class="fas fa-star-half-alt"></i>
-                    80 reviews
-                </p>
-                <button class="bg-black text-white font-bold py-2 px-4 mt-4">+ ADD TO CART</button>
-            </div>
-            <!-- Product 3 -->
-            <div class="text-center w-80">
-                <div class="relative inline-block transition-transform transform hover:scale-105 hover:shadow-lg">
-                    <span class="absolute top-0 left-0 bg-black text-white text-xs font-bold px-2 py-1">SAVE 58%</span>
-                    <img alt="Savage perfume bottle with ingredients" class="w-full h-auto" height="200" src="https://storage.googleapis.com/a1aa/image/fvyS3veDtGmS5_WiRPDxoJkRDDjV7EYwbPBIw8M6vLI.jpg" width="200"/>
-                </div>
-                <h2 class="text-lg font-bold mt-4">Savage</h2>
-                <p class="text-blue-600 font-bold">Rs. 849.00 <span class="line-through text-gray-500">Rs. 1,999.00</span></p>
-                <p class="text-yellow-500">
-                    <i class="fas fa-star"></i>
-                    <i class="fas fa-star"></i>
-                    <i class="fas fa-star"></i>
-                    <i class="fas fa-star"></i>
-                    <i class="fas fa-star-half-alt"></i>
-                    86 reviews
-                </p>
-                <button class="bg-black text-white font-bold py-2 px-4 mt-4">+ ADD TO CART</button>
-            </div>
-            <!-- Product 4 -->
-            <div class="text-center w-80">
-                <div class="relative inline-block transition-transform transform hover:scale-105 hover:shadow-lg">
-                    <span class="absolute top-0 left-0 bg-black text-white text-xs font-bold px-2 py-1">SAVE 58%</span>
-                    <img alt="Aventus perfume bottle with ingredients" class="w-full h-auto" height="200" src="https://storage.googleapis.com/a1aa/image/cnvPrtNwjNWPAz2vYVfKUS5DHm6rDK-ILUomNtIlFFk.jpg" width="200"/>
-                </div>
-                <h2 class="text-lg font-bold mt-4">Aventus</h2>
-                <p class="text-blue-600 font-bold">Rs. 849.00 <span class="line-through text-gray-500">Rs. 1,999.00</span></p>
-                <p class="text-yellow-500">
-                    <i class="fas fa-star"></i <i class="fas fa-star"></i>
-                    <i class="fas fa-star"></i>
-                    <i class="fas fa-star"></i>
-                    <i class="fas fa-star-half-alt"></i>
-                    47 reviews
-                </p>
-                <button class="bg-black text-white font-bold py-2 px-4 mt-4">+ ADD TO CART</button>
-            </div>
+        <?php
+            $servername = "localhost";
+            $username = "root";
+            $password = "";
+            $dbname = "perfumes";
+
+            $conn = new mysqli($servername, $username, $password, $dbname);
+
+            if ($conn->connect_error) {
+                die("Connection failed: " . $conn->connect_error);
+            }
+
+            // Fetch 4 random products where product_category = 'bestsellers'
+            $query = "SELECT product_id, product_name, product_image, selling_price, crossed_price, product_size 
+                    FROM product_details 
+                    WHERE product_category = 'newarrival' 
+                    ORDER BY RAND() 
+                    LIMIT 4";
+
+            $result = $conn->query($query);
+
+            if ($result->num_rows > 0) {
+                // echo "<h1 style='text-align: center;'>Bestsellers</h1>";
+                echo "<div class='product-container'>";
+
+                while ($row = $result->fetch_assoc()) {
+                    $product_id = $row['product_id'];
+                    $product_name = $row['product_name'];
+                    $image_name = $row['product_image'];
+                    $selling_price = $row['selling_price'];
+                    $crossed_price = $row['crossed_price'];
+                    $product_size = $row['product_size']; 
+
+                    // Make sure image exists
+                    $image_path = !empty($image_name) && file_exists("uploads/" . $image_name) ? "uploads/$image_name" : 'path/to/default/image.jpg';
+
+                    echo "<div class='product-card'>";
+                    echo "<h3 class='product-name'>$product_name</h3>";
+
+                    // Display product image
+                    echo "<a href='product_inside.php?product_id=$product_id'>
+                            <img src='$image_path' alt='$product_name' class='product-image' />
+                        </a>";
+
+                    // Display prices with size
+                    echo "<p class='product-price'>
+                            <strong>₹$selling_price</strong> 
+                            <span class='crossed-price'>₹$crossed_price</span>
+                            <span class='product-size'> ($product_size ml)</span>
+                        </p>";
+
+                    // Add to Cart button
+                    echo "<button class='add-to-cart' 
+                                onclick='addToCart(this, \"$product_name\", \"$image_path\", $selling_price, $crossed_price, \"$product_size\", $product_id)'>
+                                + Add to cart
+                        </button>";
+
+                    echo "</div>";
+                }
+
+                echo "</div>";
+            } else {
+                echo "<p style='text-align: center;'>No newarrival found.</p>";
+            }
+
+            $conn->close();
+            ?>
         </div>
     </section>
+
+
+    <aside class="fixed right-0 top-0 cart h-full bg-white shadow-lg p-4 overflow-y-auto hidden" id="cart">
+    <div class="flex justify-between items-center mb-4">
+        <h2 class="text-lg font-bold" id="cart-item-count">0 items</h2>
+        <button class="text-gray-500" id="close-cart"><i class="fas fa-times"></i></button>
+    </div>
+    <div class="mb-4 text-center text-green-500 font-semibold">We are accepting orders above ₹595/-</div>
+    <div class="mb-4 text-center text-red-500 font-semibold hidden" id="free-shipping-message">You are eligible for free shipping!</div>
+    <div class="border-b mb-4"></div>
+    <div id="cart-items"></div>
+    <div class="fixed bottom-0 left-0 w-full bg-white p-4 shadow-lg">
+        <!-- <div class="text-right text-gray-500 mb-2 ">
+            Super Fast & Free Delivery + Additional up to 10% OFF on all Prepaid Orders
+        </div> -->
+        <div class="flex justify-end">
+            <button class="w-auto bg-red-500 text-white py-2 px-4 rounded" id="checkout-button">
+                CHECKOUT • <span id="total-price">Rs. 0.00</span>
+            </button>
+        </div>
+    </div>
+</aside>
+
+
     <script>
+
+const cartItems = {};
+
+function addToCart(button, name, image, price, originalPrice, size, productId) {
+    // If item doesn't exist in the cart, initialize it with 1 quantity
+    if (!cartItems[productId]) {
+        cartItems[productId] = { name, image, price, originalPrice, size, quantity: 1 };
+    } else {
+        // If the item already exists, increase its quantity
+        cartItems[productId].quantity += 1;
+    }
+
+    // Update the cart display
+    updateCart();
+
+    // Show the cart if it's hidden
+    document.getElementById('cart').classList.remove('hidden');
+}
+
+document.getElementById('close-cart').addEventListener('click', () => {
+    document.getElementById('cart').classList.add('hidden');
+});
+
+function updateCart() {
+    const cartItemsContainer = document.getElementById('cart-items');
+    cartItemsContainer.innerHTML = ''; // Clear the cart before updating
+    let totalPrice = 0;
+    let itemCount = 0;
+
+    // Loop over each item in the cart
+    for (const productId in cartItems) {
+        const { name, image, price, originalPrice, size, quantity } = cartItems[productId];
+        totalPrice += price * quantity;
+        itemCount += quantity;
+
+        // Create the cart item HTML
+        const cartItem = document.createElement('div');
+        cartItem.classList.add('flex', 'items-center', 'mb-2');
+        cartItem.innerHTML = `
+            <img alt="${name}" height="50" src="${image}" width="50"/>
+            <div class="ml-4">
+                <h3 class="font-semibold">${name}</h3>
+                <div class="text-gray-500">₹${price.toFixed(2)} <span class="line-through">₹${originalPrice}</span></div>
+                <div class="text-gray-500">(${size} ml)</div>
+                <div class="flex items-center mt-2">
+                    <button class="border px-2 py-1" onclick="updateQuantity(${productId}, -1)">-</button>
+                    <span class="mx-2">${quantity}</span>
+                    <button class="border px-2 py-1" onclick="updateQuantity(${productId}, 1)">+</button>
+                    <a class="ml-4 text-blue-500" href="#" onclick="removeItem(${productId})">Remove</a>
+                </div>
+            </div>
+        `;
+        cartItemsContainer.appendChild(cartItem);
+    }
+
+    // Update the total price and item count in the cart header
+    document.getElementById('total-price').textContent = `₹${totalPrice.toFixed(2)}`;
+    document.getElementById('cart-item-count').textContent = `${itemCount} item${itemCount > 1 ? 's' : ''}`;
+
+    // Show or hide the free shipping message based on the total price
+    const checkoutButton = document.getElementById('checkout-button');
+    if (totalPrice >= 595) {
+        checkoutButton.classList.remove('bg-red-500');
+        checkoutButton.classList.add('bg-black');
+        document.getElementById('free-shipping-message').classList.remove('hidden');
+    } else {
+        checkoutButton.classList.remove('bg-black');
+        checkoutButton.classList.add('bg-red-500');
+        document.getElementById('free-shipping-message').classList.add('hidden');
+    }
+}
+
+function updateQuantity(productId, change) {
+    if (cartItems[productId]) {
+        cartItems[productId].quantity += change;
+        
+        // If quantity is less than or equal to zero, remove the item
+        if (cartItems[productId].quantity <= 0) {
+            delete cartItems[productId];
+        }
+        
+        // Update the cart after changing the quantity
+        updateCart();
+    }
+}
+
+function removeItem(productId) {
+    delete cartItems[productId];
+    updateCart();
+}
+
+function toggleCart() {
+    const cart = document.getElementById('cart');
+    cart.classList.toggle('hidden');
+}
+
+
+
         let currentSlide = 0;
         const slides = document.querySelectorAll('.slide');
 

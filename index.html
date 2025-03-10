@@ -415,10 +415,30 @@
                     <i class="fas fa-star-half-alt"></i>
                     47 reviews
                 </p>
-                <button class="bg-black text-white font-bold py-2 px-4 mt-4">+ ADD TO CART</button>
+                <button class="add-to-cart bg-black text-white font-bold py-2 px-4 mt-4">+ ADD TO CART</button>
             </div>
         </div>
     </section>
+    <script>
+        document.querySelectorAll(".add-to-cart").forEach(button => {
+            button.addEventListener("click", function() {
+                let product = this.parentElement;
+                let formData = new FormData();
+                formData.append("product_id", product.dataset.id);
+                formData.append("name", product.dataset.name);
+                formData.append("price", product.dataset.price);
+
+                fetch("add_to_cart.php", {
+                    method: "POST",
+                    body: formData
+                })
+                .then(response => response.text())
+                .then(data => alert(data)) // Show response from PHP
+                .catch(error => console.error("Error:", error));
+            });
+        });
+    </script>
+
     <script>
         let currentSlide = 0;
         const slides = document.querySelectorAll('.slide');

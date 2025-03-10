@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Admin Login - Ruuh Perfumes</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-image: url('https://images.unsplash.com/photo-1511918984140-1b0c1c1c1c1c'); /* Replace with your background image URL */
+            background-size: cover;
+            background-position: center;
+        }
+        .login-container {
+            background-color: rgba(255, 255, 255, 0.9); /* White background with some transparency */
+            border-radius: 10px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        }
+        .logo {
+            width: 100px; /* Adjust logo size */
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body class="flex items-center justify-center min-h-screen">
+    <div class="login-container p-8 max-w-sm w-full">
+        <img src="https://example.com/your-logo.png" alt="Ruuh Perfumes Logo" class="logo mx-auto"> <!-- Replace with your logo URL -->
+        <h2 class="text-2xl font-bold text-center mb-6 text-gray-800">RUUH PERFUMES</h2>
+        <form>
+            <div class="mb-4">
+                <label for="username" class="block text-sm font-semibold mb-2 text-gray-700">Username</label>
+                <input type="text" id="username" placeholder="Enter your username" class="border border-gray-300 rounded-lg w-full p-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
+            </div>
+            <div class="mb-4">
+                <label for="password" class="block text-sm font-semibold mb-2 text-gray-700">Password</label>
+                <input type="password" id="password" placeholder="Enter your password" class="border border-gray-300 rounded-lg w-full p-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
+            </div>
+            <button type="submit" class="w-full bg-blue-500 text-white font-semibold py-2 rounded-lg hover:bg-blue-600 transition duration-200">Login</button>
+        </form>
+        <div class="mt-4 text-center">
+            <a href="#" class="text-sm text-blue-500 hover:underline">Forgot Password?</a>
+        </div>
+    </div>
+</body>
+</html>

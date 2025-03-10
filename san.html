@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>Product Page</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+        }
+        .slider {
+            position: relative;
+            overflow: hidden;
+        }
+        .slides {
+            display: flex;
+            transition: transform 0.5s ease-in-out;
+        }
+        .slide {
+            min-width: 100%;
+            box-sizing: border-box;
+        }
+        .slide img {
+            height: 500px;
+            object-fit: cover;
+        }
+        .prev, .next {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background-color: rgba(0, 0, 0, 0.5);
+            color: white;
+            border: none;
+            padding: 10px;
+            cursor: pointer;
+        }
+        .prev {
+            left: 10px;
+        }
+        .next {
+            right: 10px;
+        }
+        nav a {
+            font-size: 1.25rem;
+            margin: 0 15px;
+        }
+        .product-card {
+            position: relative;
+            overflow: hidden;
+            transition: background-color 0.3s ease;
+        }
+        .product-card img {
+            width: 100%;
+            height: 250px;
+            transition: transform 0.3s ease;
+            cursor: pointer;
+        }
+        .product-card:hover img {
+            transform: scale(1.1);
+        }
+        .product-card:hover {
+            background-color: rgba(240, 240, 240, 0.5);
+        }
+        .add-to-cart {
+            transition: opacity 0.3s ease-in-out;
+            opacity: 0;
+        }
+        .product-card:hover .add-to-cart {
+            opacity: 1;
+        }
+        .filter-section {
+            position: sticky;
+            top: 0;
+            background: white;
+            z-index: 10;
+            padding: 1rem;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            height: 100vh;
+            overflow-y: auto;
+        }
+        .product-section {
+            height: 100vh;
+            overflow-y: auto;
+        }
+        .crossed-price {
+            text-decoration: line-through;
+            color: red;
+        }
+        .hidden {
+            display: none;
+        }
+        .cart {
+            width: 400px; /* Increased width of the cart */
+        }
+    </style>
+</head>
+<body class="bg-white text-gray-800">
+    <div class="container mx-auto px-4 lg:px-10">
+        <nav class="flex items-center justify-between py-2.5">
+            <div class="flex items-center space-x-2">
+                <span class="text-2xl font-bold tracking-widest">RUUH</span>
+                <span class="text-xs tracking-widest">PERFUMES</span>
+            </div>
+            <div class="flex space-x-8">
+                <a href="#" class="text-lg font-bold">HOME</a>
+                <a href="#" class="text-lg font-bold">COLLECTIONS</a>
+                <a href="ORDER.html" class="text-lg font-bold">ORDER TESTERS</a>
+                <a href="ooud.html" class="text-lg font-bold">OUD COLLECTION</a>
+                <a href="#" class="text-lg font-bold">COMBO</a>
+                <a href="" class="text-lg font-bold">SALE</a>
+            </div>
+            <div class="flex items-center space-x-4">
+                <i class="fas fa-search text-lg"></i>
+                <div class="relative">
+                    <i class="fas fa-shopping-cart text-lg" onclick="toggleCart()"></i>
+                    <span class="absolute top-0 right-0 bg-black text-white text-xs rounded-full w-4 h-4 flex items-center justify-center" id="cart-item-count">0</span>
+                </div>
+            </div>
+        </nav>
+    </div>
+
+    <!-- Main Banner -->
+    <section class="slider relative">
+        <div class="slides">
+            <div class="slide">
+                <img alt="Banner with perfume bottles and hearts" class="w-full" src="https://storage.googleapis.com/a1aa/image/DCztYU3niDGPcKW59kyBfcI04Xh2Q2vqy-WgHCQlDvA.jpg"/>
+                <div class="absolute inset-0 flex flex-col justify-center items-center text-center text-white">
+                    <h1 class="text-4xl font-bold">LOVE AT FIRST SNIFF</h1>
+                    <p class="text-2xl mt-2">UPTO 50% OFF SITEWIDE</p>
+                </div>
+            </div>
+            <div class="slide">
+                <img alt="Banner with perfume bottles and hearts" class="w-full" src="https://storage.googleapis.com/a1aa/image/DCztYU3niDGPcKW59kyBfcI04Xh2Q2vqy-WgHCQlDvA.jpg"/>
+                <div class="absolute inset-0 flex flex-col justify-center items-center text-center text-white">
+                    <h1 class="text-4xl font-bold">LOVE AT FIRST SNIFF</h1>
+                    <p class="text-2xl mt-2">UPTO 50% OFF SITEWIDE</p>
+                </div>
+            </div>
+            <div class="slide">
+                <img alt="Banner with perfume bottles and hearts" class="w-full" src="https://storage.googleapis.com/a1aa/image/DCztYU3niDGPcKW59kyBfcI04Xh2Q2vqy-WgHCQlDvA.jpg"/>
+                <div class="absolute inset-0 flex flex-col justify-center items-center text-center text-white">
+                    <h1 class="text-4xl font-bold">LOVE AT FIRST SNIFF</h1>
+                    <p class="text-2xl mt-2">UPTO 50% OFF SITEWIDE</p>
+                </div>
+            </div>
+        </div>
+        <button class="prev" onclick="moveSlide(-1)">❮</button>
+        <button class="next" onclick="moveSlide(1)">❯</button>
+    </section>
+
+    <div class="container mx-auto p-4 flex">
+        <!-- Filters Section -->
+        <div class="w-full lg:w-1/6 p-4 filter-section">
+            <h2 class="text-2xl font-bold mb-4">Filters</h2>
+            <div class="border-b border-gray-300 pb-4 mb-4">
+                <div class="flex justify-between items-center mb-2 toggle-section cursor-pointer">
+                    <h3 class="text-md font-semibold">Availability</h3>
+                    <i class="fas fa-chevron-down"></i>
+                </div>
+                <div class="ml-4 hidden">
+                    <div class="flex items-center mb-2">
+                        <input type="checkbox" id="in-stock" class="mr-2">
+                        <label for="in-stock" class="text-sm">In stock (30)</label>
+                    </div>
+                    <div class="flex items-center">
+                        <input type="checkbox" id="out-of-stock" class="mr-2">
+                        <label for="out-of-stock" class="text-sm">Out of stock (0)</label>
+                    </div>
+                </div>
+            </div>
+            <div class="border-b border-gray-300 pb-4 mb-4">
+                <div class="flex justify-between items-center mb-2 toggle-section cursor-pointer">
+                    <h3 class="text-md font-semibold">Price</h3>
+                    <i class="fas fa-chevron-down"></i>
+                </div>
+                <div class="ml-4 hidden">
+                    <div class="flex items-center mb-2">
+                        <input type="range" id="price-range" min="0" max="3000" value="0" class="w-full">
+                    </div>
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center border border-gray-300 p-2">
+                            <span class="text-sm">₹</span>
+                            <input type="number" id="price-min" min="0" max="3000" value="0" class="w-16 text-sm text-center outline-none" readonly>
+                        </div>
+                        <span class="mx-2 text-sm">to</span>
+                        <div class="flex items-center border border-gray-300 p-2">
+                            <span class="text-sm">₹</span>
+                            <input type="number" id="price-max" min="0" max="3000" value="3000" class="w-16 text-sm text-center outline-none">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="border-b border-gray-300 pb-4 mb-4">
+                <div class="flex justify-between items-center mb-2 toggle-section cursor-pointer">
+                    <h3 class="text-md font-semibold">Volume</h3>
+                    <i class="fas fa-chevron-down"></i>
+                </div>
+                <div class="ml-4 hidden">
+                    <div class="flex items-center mb-2">
+                        <input type="checkbox" id="volume-50ml" class="mr-2">
+                        <label for="volume-50ml" class="text-sm">50ml</label>
+                    </div>
+                    <div class="flex items-center mb-2">
+                        <input type="checkbox" id="volume-100ml" class="mr-2">
+                        <label for="volume-100ml" class="text-sm">100ml</label>
+                    </div>
+                    <div class="flex items-center mb-2">
+                        <input type="checkbox" id="volume-120ml" class="mr-2">
+                        <label for="volume-120ml" class="text-sm">120ml</label>
+                    </div>
+                </div>
+            </div>
+            <button id="reset-filters" class="w-full bg-red-500 text-white py-2 mt-4">Remove All Filters</button>
+        </div>
+
+        <!-- Products Section -->
+        <div class="w-full lg:w-5/6 p-4 product-section">
+            <div class="flex justify-between items-center mb-4">
+                <span class="text-lg" id="product-count">42 products</span>
+                <div class="flex items-center">
+                    <span class="mr-2">Sort by</span>
+                    <select id="sort-by" class="border border-gray-300 rounded p-2" onchange="sortProducts()">
+                        <option value="name-asc">Alphabetically, A-Z</option>
+                        <option value="name-desc">Alphabetically, Z-A</option>
+                        <option value="price-asc">Price, low to high</option>
+                        <option value="price-desc">Price, high to low</option>
+                    </select>
+                </div>
+            </div>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4" id="product-list">
+                <!-- Product 1 -->
+                <div class="product-card relative" data-name="Acqua-20M" data-price="249" data-original-price="799" data-image="https://storage.googleapis.com/a1aa/image/6W25Lv8Euq3O1pLTnhFQSSxnw_QglDp5shXsJrGFLVo.jpg">
+                    <img alt="Acqua-20M perfume bottle" class="w-full h-64 object-cover mb-4" src="https://storage.googleapis.com/a1aa/image/6W25Lv8Euq3O1pLTnhFQSSxnw_QglDp5shXsJrGFLVo.jpg"/>
+                    <h3 class="text-lg font-semibold mb-2">Acqua-20M</h3>
+                    <p class="text-lg font-bold text-gray-900">Rs. 249.00 <span class="crossed-price">Rs. 799.00</span></p>
+                    <button class="mt-2 w-full bg-white border border-gray-300 text-gray-800 font-semibold py-2 rounded add-to-cart" onclick="addToCart(this)">+ Add to cart</button>
+                </div>
+                <!-- Product 2 -->
+                <div class="product-card relative" data-name="Blfred Icon-20ML" data-price="249" data-original-price="799" data-image="https://storage.googleapis.com/a1aa/image/Fvu0Qw7cDZ_MGsrB_1Bsbj0xGKn1XkjPqP7mKGR5gSU.jpg">
+                    <img alt="Alfred Icon-20ML perfume bottle" class="w-full h-64 object-cover mb-4" src="https://storage.googleapis.com/a1aa/image/Fvu0Qw7cDZ_MGsrB_1Bsbj0xGKn1XkjPqP7mKGR5gSU.jpg"/>
+                    <h3 class="text-lg font-semibold mb-2">Blfred Icon-20ML</h3>
+                    <p class="text-lg font-bold text-gray-900">Rs. 249.00 <span class="crossed-price">Rs. 799.00</span></p>
+                    <button class="mt-2 w-full bg-white border border-gray-300 text-gray-800 font-semibold py-2 rounded add-to-cart" onclick="addToCart(this)">+ Add to cart</button>
+                </div>
+                <!-- Product 3 -->
+                <div class="product-card relative" data-name="Cventus-20ML" data-price="249" data-original-price="799" data-image="https://storage.googleapis.com/a1aa/image/SLP8iZjKtMEnYVPwWEGlrwePnDroQSaCJdHNGvDMCtk.jpg">
+                    <img alt="Aventus-20ML perfume bottle" class="w-full h-64 object-cover mb-4" src="https://storage.googleapis.com/a1aa/image/SLP8iZjKtMEnYVPwWEGlrwePnDroQSaCJdHNGvDMCtk.jpg"/>
+                    <h3 class="text-lg font-semibold mb-2">Cventus-20ML</h3>
+                    <p class="text-lg font-bold text-gray-900">Rs. 249.00 <span class="crossed-price">Rs. 799.00</span></p>
+                    <button class="mt-2 w-full bg-white border border-gray-300 text-gray-800 font-semibold py-2 rounded add-to-cart" onclick="addToCart(this)">+ Add to cart</button>
+                </div>
+                <!-- Product 4 -->
+                <div class="product-card relative" data-name="Dior Sauvage" data-price="299" data-original-price="899" data-image="https://storage.googleapis.com/a1aa/image/6W25Lv8Euq3O1pLTnhFQSSxnw_QglDp5shXsJrGFLVo.jpg">
+                    <img alt="Dior Sauvage perfume bottle" class="w-full h-64 object-cover mb-4" src="https://storage.googleapis.com/a1aa/image/6W25Lv8Euq3O1pLTnhFQSSxnw_QglDp5shXsJrGFLVo.jpg"/>
+                    <h3 class="text-lg font-semibold mb-2">Dior Sauvage</h3>
+                    <p class="text-lg font-bold text-gray-900">Rs. 299.00 <span class="crossed-price">Rs. 899.00</span></p>
+                    <button class="mt-2 w-full bg-white border border-gray-300 text-gray-800 font-semibold py-2 rounded add-to-cart" onclick="addToCart(this)">+ Add to cart</button>
+                </div>
+                <!-- Product 5 -->
+                <div class="product-card relative" data-name="Euphoria" data-price="199" data-original-price="699" data-image="https://storage.googleapis.com/a1aa/image/Fvu0Qw7cDZ_MGsrB_1Bsbj0xGKn1XkjPqP7mKGR5gSU.jpg">
+                    <img alt="Euphoria perfume bottle" class="w-full h-64 object-cover mb-4" src="https://storage.googleapis.com/a1aa/image/Fvu0Qw7cDZ_MGsrB_1Bsbj0xGKn1XkjPqP7mKGR5gSU.jpg"/>
+                    <h3 class="text-lg font-semibold mb-2">Euphoria</h3>
+                    <p class="text-lg font-bold text-gray-900">Rs. 199.00 <span class="crossed-price">Rs. 699.00</span></p>
+                    <button class="mt-2 w-full bg-white border border-gray-300 text-gray-800 font-semibold py-2 rounded add-to-cart" onclick="addToCart(this)">+ Add to cart</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Cart Section -->
+    <aside class="fixed right-0 top-0 cart h-full bg-white shadow-lg p-4 overflow-y-auto hidden" id="cart">
+        <div class="flex justify-between items-center mb-4">
+            <h2 class="text-lg font-bold" id="cart-item-count">0 items</h2>
+            <button class="text-gray-500" id="close-cart"><i class="fas fa-times"></i></button>
+        </div>
+        <div class="mb-4 text-center text-green-500 font-semibold">We are accepting orders above ₹595/-</div>
+        <div class="mb-4 text-center text-red-500 font-semibold hidden" id="free-shipping-message">You are eligible for free shipping!</div>
+        <div class="border-b mb-4"></div>
+        <div id="cart-items"></div>
+        <div class="fixed bottom-0 left-0 w-full bg-white p-4 shadow-lg">
+    <div class="text-right text-gray-500 mb-2">Super Fast &amp; Free Delivery + Additional up to 10% OFF on all Prepaid Orders</div>
+            <div class="flex justify-end">
+                <button class="w-auto bg-red-500 text-white py-2 px-4 rounded" id="checkout-button">CHECKOUT • <span id="total-price">Rs. 0.00</span></button>
+            </div>
+        </div>
+    </aside>
+
+    <script>
+        const cartItems = {};
+
+        function addToCart(button) {
+            const product = button.parentElement;
+            const name = product.getAttribute('data-name');
+            const price = parseFloat(product.getAttribute('data-price'));
+            const originalPrice = product.getAttribute('data-original-price');
+            const image = product.getAttribute('data-image');
+
+            if (!cartItems[name]) {
+                cartItems[name] = { price, originalPrice, image, quantity: 1 };
+            } else {
+                cartItems[name].quantity += 1;
+            }
+
+            updateCart();
+            document.getElementById('cart').classList.remove('hidden');
+        }
+
+        document.getElementById('close-cart').addEventListener('click', () => {
+            document.getElementById('cart').classList.add('hidden');
+        });
+
+        function updateCart() {
+            const cartItemsContainer = document.getElementById('cart-items');
+            cartItemsContainer.innerHTML = '';
+            let totalPrice = 0;
+            let itemCount = 0;
+
+            for (const item in cartItems) {
+                const { price, originalPrice, image, quantity } = cartItems[item];
+                totalPrice += price * quantity;
+                itemCount += quantity;
+
+                const cartItem = document.createElement('div');
+                cartItem.classList.add('flex', 'items-center', 'mb-2');
+                cartItem.innerHTML = `
+                    <img alt="${item}" height="50" src="${image}" width="50"/>
+                    <div class="ml-4">
+                        <h3 class="font-semibold">${item}</h3>
+                        <div class="text-gray-500">Rs. ${price.toFixed(2)} <span class="line-through">Rs. ${originalPrice}</span></div>
+                        <div class="flex items-center mt-2">
+                            <button class="border px-2 py-1" onclick="updateQuantity('${item}', -1)">-</button>
+                            <span class="mx-2">${quantity}</span>
+                            <button class="border px-2 py-1" onclick="updateQuantity('${item}', 1)">+</button>
+                            <a class="ml-4 text-blue-500" href="#" onclick="removeItem('${item}')">Remove</a>
+                        </div>
+                    </div>
+                `;
+                cartItemsContainer.appendChild(cartItem);
+            }
+
+            document.getElementById('total-price').textContent = `Rs. ${totalPrice.toFixed(2)}`;
+            document.getElementById('cart-item-count').textContent = `${itemCount} items`;
+
+            // Update checkout button color based on total price
+            const checkoutButton = document.getElementById('checkout-button');
+            if (totalPrice >= 595) {
+                checkoutButton.classList.remove('bg-red-500');
+                checkoutButton.classList.add('bg-black');
+                document.getElementById('free-shipping-message').classList.remove('hidden');
+            } else {
+                checkoutButton.classList.remove('bg-black');
+                checkoutButton.classList.add('bg-red-500');
+                document.getElementById('free-shipping-message').classList.add('hidden');
+            }
+        }
+
+        function updateQuantity(itemName, change) {
+            if (cartItems[itemName]) {
+                cartItems[itemName].quantity += change;
+                if (cartItems[itemName].quantity <= 0) {
+                    delete cartItems[itemName];
+                }
+                updateCart();
+            }
+        }
+
+        function removeItem(itemName) {
+            delete cartItems[itemName];
+            updateCart();
+        }
+
+        function toggleCart() {
+            const cart = document.getElementById('cart');
+            cart.classList.toggle('hidden');
+        }
+    </script>
+</body>
+</html>
