@@ -1,32 +1,40 @@
 <?php
-//require '../../auth.php'; // auth check
+require '../../config.php'; // Database connection
 
-require '../../config.php';
 // Generate a unique order_id
 $order_id = "ORD" . time();
 $order_type = "Purchase";
 
-// Fetch products for the dropdown
-$products_result = $conn->query("
+// Fetch suppliers
+$supplier_query = "
     SELECT 
-        product_code,
-        general_name,
-        pp,
-        sp,
-        mrgp,
-        product_life,
-        batch_code
-    FROM 
-        product
-");
+        supplier_id, 
+        CONCAT(IFNULL(comp_first_name, ''), ' ', IFNULL(comp_middle_name, ''), ' ', IFNULL(comp_last_name, '')) AS company_name 
+    FROM supplier
+";
+
+$supplier_result = $conn->query($supplier_query);  // Execute the query correctly
+
+if (!$supplier_result) {
+    die("Supplier Query Failed: " . $conn->error);
+}
+
+// Fetch products
+$product_query = "SELECT product_code, general_name, pp, sp, mrgp, product_life, batch_code FROM product";
+$product_result = $conn->query($product_query);
+
+if (!$product_result) {
+    die("Product Query Failed: " . $conn->error);
+}
 
 $products = [];
-while ($row = $products_result->fetch_assoc()) {
+while ($row = $product_result->fetch_assoc()) {
     $products[] = $row;
 }
 ?>
+
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en">    
 
 <head>
     <meta charset="UTF-8">
@@ -201,14 +209,16 @@ while ($row = $products_result->fetch_assoc()) {
                     <div class="mb-3 col-md-3">
                         <label for="supplier_id" class="form-label">Supplier</label>
                         <select id="supplier_id" name="supplier_id" class="form-select to-fill" required>
-                            <option value="">Select Supplier</option>
-                            <?php
-                            $supplier_result = $conn->query("SELECT id, CONCAT(comp_first_name, ' ', comp_middle_name, ' ', comp_last_name) AS company_name FROM supplier");
-                            while ($row = $supplier_result->fetch_assoc()) {
-                                echo "<option value='{$row['id']}'>{$row['company_name']}</option>";
-                            }
-                            ?>
-                        </select>
+                        <option value="">Select Supplier</option>
+                        <?php
+                        // Loop through and render options for suppliers
+                        while ($row = $supplier_result->fetch_assoc()) {
+                            echo "<option value='{$row['supplier_id']}'>{$row['company_name']}</option>";
+                        }
+                        ?>
+                    </select>
+
+
                     </div>
                     <div class="mb-3 col-md-2">
                         <label for="order_date" class="form-label">Order Date</label>

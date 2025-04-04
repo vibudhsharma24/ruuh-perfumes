@@ -140,10 +140,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         <label for="driver_phone" class="form-label">Driver Phone</label>
                         <input type="text" id="driver_phone" name="driver_phone" class="form-control" value="<?php echo $logisticsDetails ? $logisticsDetails['driver_phone'] : ''; ?>">
                     </div>
-                    <div class="col-md-2">
-                        <label for="driver_gst_no" class="form-label">Driver GST No</label>
-                        <input type="text" id="driver_gst_no" name="driver_gst_no" class="form-control" value="<?php echo $logisticsDetails ? $logisticsDetails['driver_gst_no'] : ''; ?>">
-                    </div>
+                  
                     <div class="col-md-2">
                         <label for="estimated_date" class="form-label">Estimated Delivery Date</label>
                         <input type="date" id="estimated_date" name="estimated_date" class="form-control" value="<?php echo $logisticsDetails ? $logisticsDetails['estimated_delivery_date'] : ''; ?>">

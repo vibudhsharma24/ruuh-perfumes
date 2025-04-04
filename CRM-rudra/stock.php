@@ -5,16 +5,18 @@ require 'config.php'; // database connection
 
 // Fetch product and stock details
 $sql = "
-    SELECT 
-        product.product_code,
-        product.general_name,
-        product.product_life,
-        stock.batch_code,
-        stock.quantity
-    FROM 
-        product
-    JOIN 
-        stock ON product.batch_code = stock.batch_code
+   SELECT 
+    product.product_code,
+    product.general_name,
+    product.product_life,
+    stock.reorder_level,  -- Fetching reorder_level from the stock table
+    stock.batch_code,
+    stock.quantity
+FROM 
+    product
+JOIN 
+    stock ON product.batch_code = stock.batch_code;
+
 ";
 
 $result = $conn->query($sql);
@@ -146,14 +148,15 @@ $result = $conn->query($sql);
         <div id="main" class="col-9">
             <h2 class="mb-4 mt-4">Stock Details</h2>
             <a href="./updateForms/updateStock.php"><button type="button" class="btn btn-primary mb-4">Update Stock</button></a>
+            <a href="reorder.php"><button type="button" class="btn btn-danger mb-4">Reorder Level</button></a>
             <div class="table-responsive">
                 <table class="table table-striped">
                     <thead class="table-dark">
                         <tr>
                             <th>Batch Code</th>
-                            <th>General Name</th>
-                            <th>Product Life (Months)</th>
-                            <th>Stock Quantity</th>
+                            <th>Product Name</th>
+                            <th>Remaining Quantity</th>
+                            <th>Reorder Level</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -165,8 +168,8 @@ $result = $conn->query($sql);
                                 echo "<tr>";
                                 echo "<td>" . htmlspecialchars($row['batch_code']) . "</td>";
                                 echo "<td>" . htmlspecialchars($row['general_name']) . "</td>";
-                                echo "<td>" . htmlspecialchars($row['product_life']) . "</td>";
                                 echo "<td>" . htmlspecialchars($row['quantity']) . "</td>";
+                                echo "<td>" . htmlspecialchars($row['reorder_level']) . "</td>";
                                 echo "</tr>";
                             }
                         } else {

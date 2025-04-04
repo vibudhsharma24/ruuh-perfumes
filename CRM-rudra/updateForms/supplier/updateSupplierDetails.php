@@ -274,66 +274,55 @@ if (isset($_GET['trader_id'])) {
 
             <div class="row mb-3">
                 <div class="col-md-3">
-                    <label for="comp-chemical-license">Supplier Chemical License *</label>
-                    <input type="text" class="form-control" id="comp-chemical-license" name="comp-chemical-license"
-                        placeholder="Chemical License"
-                        value="<?php echo htmlspecialchars($row['chemical_license']); ?>" pattern="^[A-Za-z0-9]+$"
-                        maxlength=" 50" required>
-                    <div class="invalid-feedback">
-                        <?php echo $errors['comp-chemical-license'] ?? 'Please Enter Chemical License'; ?>
-                    </div>
-                </div>
-                <div class="col-md-3">
-                    <label for="comp-trader-id">Company Trader ID *</label>
-                    <input type="text" class="form-control" id="comp-trader-id" name="comp-trader-id"
-                        placeholder="Trader ID" value="<?php echo htmlspecialchars($row['trader_id']); ?>" required>
-                    <div class="invalid-feedback">
-                        <?php echo $errors['comp-trader-id'] ?? 'Please Trader ID'; ?>
-                    </div>
-                </div>
-                <div class="col-md-3">
-                    <label for="comp-gst-no">Company GST No *</label>
-                    <input type="int" class="form-control" id="comp-gst-no" name="comp-gst-no" pattern="\d{15}$"
-                        min="10" max="10" placeholder="GST No" value="<?php echo htmlspecialchars($row['gst_no']); ?>"
-                        required>
-                    <div class="invalid-feedback">
-                        <?php echo $errors['comp-gst-no'] ?? 'Please Enter 15 Digit GST No'; ?>
-                    </div>
-                </div>
-                <div class="col-md-3">
-                    <label for="comp-tan-no">Company's TAN No *</label>
-                    <input type="text" class="form-control" id="comp-tan-no" name="comp-tan-no" placeholder="TAN No"
-                        value="<?php echo htmlspecialchars($row['tan_no']); ?>" pattern="^[A-Za-z0-9]{10}$"
-                        minlength="10" maxlength="10" required>
-                    <div class="invalid-feedback">
-                        <?php echo $errors['comp-tan-no'] ?? 'Please Enter a Valid 10-Character Alphanumeric TAN No'; ?>
-                    </div>
-                </div>
-            </div>
-
-            <div class="row mb-3">
-                <div class="col-md-3">
                     <label for="comp-pan-no">Company PAN No *</label>
                     <input type="text" class="form-control" id="comp-pan-no" name="comp-pan-no" placeholder="PAN No"
-                        value="<?php echo htmlspecialchars($row['pan_no']); ?>" pattern="^[A-Za-z0-9]{10}$"
-                        minlength="10" maxlength="10" required>
+                    value="<?php echo htmlspecialchars($row['pan_no']); ?>" pattern="^[A-Za-z0-9]{10}$"
+                    minlength="10" maxlength="10" required>
                     <div class="invalid-feedback">
-                        <?php echo $errors['comp-pan-no'] ?? 'lease Enter a Valid 10-Character Alphanumeric TAN No'; ?>
+                            <?php echo $errors['comp-pan-no'] ?? 'lease Enter a Valid 10-Character Alphanumeric TAN No'; ?>
+                        </div>
                     </div>
+                    <div class="col-md-3">
+                        <label for="comp-tan-no">Company's TAN No *</label>
+                        <input type="text" class="form-control" id="comp-tan-no" name="comp-tan-no" placeholder="TAN No"
+                        value="<?php echo htmlspecialchars($row['tan_no']); ?>" pattern="^[A-Za-z0-9]{10}$"
+                        minlength="10" maxlength="10" required>
+                        <div class="invalid-feedback">
+                            <?php echo $errors['comp-tan-no'] ?? 'Please Enter a Valid 10-Character Alphanumeric TAN No'; ?>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <label for="comp-trader-id">Company Trader ID *</label>
+                        <input type="text" class="form-control" id="comp-trader-id" name="comp-trader-id"
+                        placeholder="Trader ID" value="<?php echo htmlspecialchars($row['trader_id']); ?>" required>
+                        <div class="invalid-feedback">
+                            <?php echo $errors['comp-trader-id'] ?? 'Please Trader ID'; ?>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <label for="comp-gst-no">Company GST No *</label>
+                        <input type="int" class="form-control" id="comp-gst-no" name="comp-gst-no" pattern="\d{15}$"
+                        min="10" max="10" placeholder="GST No" value="<?php echo htmlspecialchars($row['gst_no']); ?>"
+                        required>
+                        <div class="invalid-feedback">
+                            <?php echo $errors['comp-gst-no'] ?? 'Please Enter 15 Digit GST No'; ?>
+                        </div>
+                
+                
                 </div>
-
+                
                 <!--  Remarks  -->
-
+                
                 <div class="col-md-9">
                     <label for="remarks">Remarks</label>
                     <textarea class="form-control" name="remarks" id="remarks"
-                        rows="3"><?php echo htmlspecialchars($row['remarks']); ?></textarea>
+                    rows="3"><?php echo htmlspecialchars($row['remarks']); ?></textarea>
                 </div>
             </div>
-
+            
             <!-- Submit Button -->
-
-            <div class="row mt-4">
+            
+            <div class="row mt-3">
                 <div class="col-md-6 mb-3 d-grid">
                     <button type="submit" class="btn btn-primary">Submit</button>
                 </div>
@@ -343,11 +332,11 @@ if (isset($_GET['trader_id'])) {
             </div>
         </form>
     </div>
-
+    
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
         crossorigin="anonymous"></script>
-    <script src="supplier.js"></script>
-</body>
-
-</html>
+        <script src="supplier.js"></script>
+    </body>
+    
+    </html>

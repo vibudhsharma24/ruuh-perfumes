@@ -17,7 +17,6 @@ $sql = "
         manager_name,
         manager_phone,
         manager_email,
-        chemical_license,
         comp_email,
         comp_address,
         trader_id,
@@ -26,7 +25,7 @@ $sql = "
         tan_no,
         remarks
     FROM 
-        client
+        supplier
 ";
 
 $result = $conn->query($sql);
@@ -40,7 +39,7 @@ $result = $conn->query($sql);
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-    <title>Client Details</title>
+    <title>supplier Details</title>
     <style>
         /* General table styling */
         .table {
@@ -158,8 +157,8 @@ $result = $conn->query($sql);
 
         <!-- Main Content -->
         <div id="main" class="col-9">
-            <h2 class="mb-4 mt-4">Client Details</h2>
-            <a href="./addForms/client/addClient.php"><button type="button" class="btn btn-primary mb-4">Add New Client</button></a>
+            <h2 class="mb-4 mt-4">supplier Details</h2>
+            <a href="./addForms/supplier/addsupplier.php"><button type="button" class="btn btn-primary mb-4">Add New supplier</button></a>
             <div class="table-responsive">
                 <table class="table table-striped">
                     <thead class="table-dark">
@@ -170,7 +169,6 @@ $result = $conn->query($sql);
                             <th>Company Address</th>
                             <th>Manager Name</th>
                             <th>Manager Phone</th>
-                            <th>Chemical License</th>
                             <th>GST No</th>
                             <th>PAN No</th>
                             <th>TAN No</th>
@@ -184,10 +182,10 @@ $result = $conn->query($sql);
                             while ($row = $result->fetch_assoc()) {
                                 echo "<tr>";
                                 echo "<td>
-    <a href='./updateForms/client/updateClientDetails.php?trader_id=" . urlencode($row['trader_id']) . "'>
+    <a href='./updateForms/supplier/updatesupplierDetails.php?trader_id=" . urlencode($row['trader_id']) . "'>
         <button  style=\"margin-bottom: 5px;\" type='button' class='btn btn-danger'>Edit</button>
     </a>
-    <a href='./clientDetails.php?trader_id=" . urlencode($row['trader_id']) . "'>
+    <a href='./supplierDetails.php?trader_id=" . urlencode($row['trader_id']) . "'>
         <button type='button' class='btn btn-primary'>Details</button>
     </a>
 </td>";
@@ -196,7 +194,6 @@ $result = $conn->query($sql);
                                 echo "<td>" . htmlspecialchars($row['comp_address']) . "</td>";
                                 echo "<td>" . htmlspecialchars($row['manager_name']) . "</td>";
                                 echo "<td>" . htmlspecialchars($row['manager_phone']) . "</td>";
-                                echo "<td>" . htmlspecialchars($row['chemical_license']) . "</td>";
                                 echo "<td>" . htmlspecialchars($row['gst_no']) . "</td>";
                                 echo "<td>" . htmlspecialchars($row['pan_no']) . "</td>";
                                 echo "<td>" . htmlspecialchars($row['tan_no']) . "</td>";

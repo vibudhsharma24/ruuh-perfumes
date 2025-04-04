@@ -3,7 +3,6 @@
 require '../../config.php';
 
 // Get the posted data
-$order_id = $_POST['order_id'];
 $supplier_id = $_POST['supplier_id'];
 $order_date = $_POST['order_date'];
 $payment_method = $_POST['payment_method'];
@@ -28,19 +27,18 @@ $sgst = isset($_POST['sgst']) ? $_POST['sgst'] : [];
 $igst = isset($_POST['igst']) ? $_POST['igst'] : [];
 $billing_amount = isset($_POST['billing_amount']) ? $_POST['billing_amount'] : [];
 
-// Validate stock before inserting
-for ($i = 0; $i < count($batch_codes); $i++) {
-    $batch_code = $batch_codes[$i];
-    $quantity = $quantities[$i];
-}
+// Insert the order into the ordermaster table
+$order_sql = "INSERT INTO ordermaster (type, client_id, supplier_id, payment_method, payment_date, advance, due, total_amount, date) 
+              VALUES ('$order_type', NULL, $supplier_id, '$payment_method', '$payment_date', $advance, $due, $total_amount, '$order_date')";
 
-// Prepare the SQL query by directly inserting the values into the statement
-$order_sql = "INSERT INTO orders (order_id, type, client_id, supplier_id, payment_method, payment_date, advance, due, total_amount,date) 
- VALUES ('$order_id', '$order_type', NULL, $supplier_id, '$payment_method', '$payment_date', $advance, $due, $total_amount, '$order_date')";
 if (!$conn->query($order_sql)) {
     die("Error inserting order: " . $conn->error);
 }
 
+// Get the last inserted order_id
+$order_id = $conn->insert_id;
+
+// Now insert into order_items
 for ($i = 0; $i < count($batch_codes); $i++) {
     $batch_code = $batch_codes[$i];
     $quantity = $quantities[$i];
@@ -53,29 +51,31 @@ for ($i = 0; $i < count($batch_codes); $i++) {
     $igst_value = isset($igst[$i]) ? $igst[$i] : 0;
     $billing_amount_value = isset($billing_amount[$i]) ? $billing_amount[$i] : 0;
 
-    // Determine supplier_id if needed
-    $client_id = NULL; // You may want to set this based on conditions
+    $order_items_sql = "INSERT INTO order_items (order_id, batch_code, quantity, discount, tax_percent, cgst, sgst, igst, freight, billing_amount) 
+                        VALUES ('$order_id', '$batch_code', $quantity, $discount, $tax_percent_value, $cgst_value, $sgst_value, $igst_value, $freight, $billing_amount_value)";
 
-    //update payment table
-    $order_items_sql = "INSERT INTO order_items (order_id, batch_code, quantity, discount, tax_percent, cgst, sgst, igst, freight, billing_amount) VALUES ('$order_id', '$batch_code', $quantity, $discount, $tax_percent_value, $cgst_value, $sgst_value, $igst_value, $freight, $billing_amount_value)";
     if (!$conn->query($order_items_sql)) {
-        die("Error inserting order: " . $conn->error);
+        die("Error inserting order items: " . $conn->error);
     }
 
     // Deduct the quantity from stock after the order is inserted
-    $update_stock_sql = "UPDATE stock SET quantity = quantity + $quantity WHERE batch_code = '$batch_code'";
+    $update_stock_sql = "UPDATE stock SET quantity = quantity - $quantity WHERE batch_code = '$batch_code'";
+
     if (!$conn->query($update_stock_sql)) {
         die("Error updating stock: " . $conn->error);
     }
 }
 
-$revenue_sql = "INSERT INTO revenue (order_id, client_id, supplier_id, total_amount_client, amount_received, due_client, total_amount_supplier, amount_paid, due_supplier) VALUES ('$order_id', NULL, $supplier_id, 0, 0, 0, $total_amount, $advance, $due)";
+// Insert into revenue table
+$revenue_sql = "INSERT INTO revenue (order_id, client_id, supplier_id, total_amount_client, amount_received, due_client, total_amount_supplier, amount_paid, due_supplier) 
+                VALUES ('$order_id', NULL, $supplier_id, 0, 0, 0, $total_amount, $advance, $due)";
+
 if (!$conn->query($revenue_sql)) {
-    die("Error inserting order: " . $conn->error);
+    die("Error inserting revenue: " . $conn->error);
 }
 
-echo "<script>alert('Order Saved successfully!');
-location.replace('../../orders.php');
-</script>";
+echo "<script>alert('Order Saved successfully!'); location.replace('../../orders.php');</script>";
 
 $conn->close();
+
+?>

@@ -11,7 +11,7 @@ if (!$order_id) {
 }
 
 // Fetch order details
-$order_sql = "SELECT * FROM orders WHERE order_id = '$order_id'";
+$order_sql = "SELECT * FROM ordermaster WHERE order_id = '$order_id'";
 $order_result = $conn->query($order_sql);
 
 if ($order_result->num_rows != 1) {
@@ -213,20 +213,33 @@ while ($row = $products_result->fetch_assoc()) {
 
             <!-- Supplier and Payment Method Selection -->
             <div class="row mb-4" style="z-index: 2; position: sticky; top: 0;background: var(--bs-gray-100);">
-                <div class="row mb-4">
-                    <div class="mb-3 col-md-3">
-                        <label for="supplier_id" class="form-label">Supplier</label>
-                        <select id="supplier_id" name="supplier_id" class="form-select to-fill" required>
-                            <option value="">Select Supplier</option>
-                            <?php
-                            $supplier_result = $conn->query("SELECT id, CONCAT(comp_first_name, ' ', comp_middle_name, ' ', comp_last_name) AS company_name FROM supplier");
-                            while ($row = $supplier_result->fetch_assoc()) {
-                                $selected = ($row['id'] == $order['supplier_id']) ? 'selected' : '';
-                                echo "<option value='{$row['id']}' $selected>{$row['company_name']}</option>";
-                            }
-                            ?>
-                        </select>
-                    </div>
+            <div class="row mb-3">
+            <div class="col-md-4">
+                <label for="supp-id">Select Supplier</label>
+                <select class="form-select" id="supp-id" name="supp-id" required>
+                    <option value="">Select Supplier</option>
+                    <?php
+                    // Fetch all suppliers from the database
+                    $sql_suppliers = "SELECT trader_id, CONCAT(first_name, ' ', middle_name, ' ', last_name) AS full_name FROM supplier";
+                    $result_suppliers = $conn->query($sql_suppliers);
+
+                    // Loop through the suppliers and display them as options
+                    if ($result_suppliers->num_rows > 0) {
+                        while ($row_supplier = $result_suppliers->fetch_assoc()) {
+                            $selected = ($row_supplier['trader_id'] == $row['trader_id']) ? 'selected' : '';
+                            echo "<option value='" . htmlspecialchars($row_supplier['trader_id']) . "' $selected>" . htmlspecialchars($row_supplier['full_name']) . "</option>";
+                        }
+                    } else {
+                        echo "<option value=''>No Suppliers Found</option>";
+                    }
+                    ?>
+                </select>
+                <div class="invalid-feedback">
+                    Please select a supplier.
+                </div>
+            </div>
+        </div>
+
                     <div class="mb-3 col-md-2">
                         <label for="order_date" class="form-label">Order Date</label>
                         <input type="date" id="order_date" name="order_date" class="form-control to-fill"
@@ -411,7 +424,7 @@ while ($row = $products_result->fetch_assoc()) {
             </div>
 
             <!-- Add Row and Submit Buttons -->
-            <button type="button" class="btn btn-primary mb-4" id="addRow">Add Item</button>
+            <button type="button" class="btn btn-primary mb-4 " style="margin-left: 160px;" id="addRow">Add Item</button>
             <button type="submit" class="btn btn-success mx-2 mb-4">Update Order</button>
         </form>
     </div>
