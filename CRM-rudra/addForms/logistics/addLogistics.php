@@ -4,7 +4,7 @@
 require '../../config.php';
 
 // Fetch unique order IDs for the dropdown
-$orderIds = $conn->query("SELECT DISTINCT order_id FROM orders");
+$orderIds = $conn->query("SELECT DISTINCT order_id FROM ordermaster");
 
 // Handle form submission
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {

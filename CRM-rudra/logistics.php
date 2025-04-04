@@ -161,7 +161,6 @@ $result = $conn->query($sql);
                             <th>Order ID</th>
                             <th>Vehicle No</th>
                             <th>Driver Name</th>
-                            <th>Driver GST</th>
                             <th>Estimated Delivery</th>
                         </tr>
                     </thead>
@@ -172,11 +171,16 @@ $result = $conn->query($sql);
                             while ($row = $result->fetch_assoc()) {
                                 echo "<tr>";
                                 echo "<td><a href='./updateForms/logistics/updateLogistics.php?order_id=" . urlencode($row['order_id']) . "'>
-        <button type='button' class='btn btn-danger'>Update</button></a></td>";
+                                
+        <button type='button' class='btn btn-danger'>Update</button></a>
+
+        <a href='Orderdetails.php'>
+        <button type='button' class='btn btn-primary'>Details</button></a>
+        
+        </td>";
                                 echo "<td>" . htmlspecialchars($row['order_id']) . "</td>";
                                 echo "<td>" . htmlspecialchars($row['vehicle_no']) . "</td>";
                                 echo "<td>" . htmlspecialchars($row['driver_name']) . "</td>";
-                                echo "<td>" . htmlspecialchars($row['driver_gst_no']) . "</td>";
                                 echo "<td>" . htmlspecialchars($row['estimated_delivery_date']) . "</td>";
                             }
                         } else {

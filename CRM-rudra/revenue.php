@@ -1,8 +1,6 @@
 <?php
 
-//require 'auth.php';
-
-require 'config.php'; // database connection
+require 'config.php'; // Database connection
 
 // Initialize variables for filtering
 $whereClause = "";
@@ -13,69 +11,78 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $startDate = $_POST['start_date'] ?? '';
     $endDate = $_POST['end_date'] ?? '';
 
-    if ($reportType === 'custom') {
-        // Custom date range filter
-        if (!empty($startDate) && !empty($endDate)) {
-            $whereClause = "WHERE orders.date BETWEEN '$startDate' AND '$endDate'";
-        }
+    if ($reportType === 'custom' && !empty($startDate) && !empty($endDate)) {
+        $whereClause = "WHERE ordermaster.date BETWEEN '$startDate' AND '$endDate'";
     } else {
-        // Predefined intervals
         switch ($reportType) {
             case 'weekly':
-                $whereClause = "WHERE orders.date >= DATE_SUB(CURDATE(), INTERVAL 1 WEEK)";
+                $whereClause = "WHERE ordermaster.date >= DATE_SUB(CURDATE(), INTERVAL 1 WEEK)";
                 break;
             case 'fortnightly':
-                $whereClause = "WHERE orders.date >= DATE_SUB(CURDATE(), INTERVAL 2 WEEK)";
+                $whereClause = "WHERE ordermaster.date >= DATE_SUB(CURDATE(), INTERVAL 2 WEEK)";
                 break;
             case 'quarterly':
-                $whereClause = "WHERE orders.date >= DATE_SUB(CURDATE(), INTERVAL 3 MONTH)";
+                $whereClause = "WHERE ordermaster.date >= DATE_SUB(CURDATE(), INTERVAL 3 MONTH)";
                 break;
             case 'half_yearly':
-                $whereClause = "WHERE orders.date >= DATE_SUB(CURDATE(), INTERVAL 6 MONTH)";
+                $whereClause = "WHERE ordermaster.date >= DATE_SUB(CURDATE(), INTERVAL 6 MONTH)";
                 break;
             case 'yearly':
-                $whereClause = "WHERE orders.date >= DATE_SUB(CURDATE(), INTERVAL 1 YEAR)";
+                $whereClause = "WHERE ordermaster.date >= DATE_SUB(CURDATE(), INTERVAL 1 YEAR)";
                 break;
         }
     }
 }
 
-// Fetch filtered revenue details
-$sql = "
-    SELECT 
-        revenue.order_id,
-        revenue.client_id,
-        revenue.supplier_id,
-        revenue.total_amount_client,
-        revenue.amount_received,
-        revenue.due_client,
-        revenue.total_amount_supplier,
-        revenue.amount_paid,
-        revenue.due_supplier,
-        orders.date
-    FROM 
-        revenue
-    LEFT JOIN orders ON revenue.order_id = orders.order_id
-    $whereClause
-";
-
-$result = $conn->query($sql);
-
 // Fetch revenue summary
 $summarySql = "
     SELECT 
-        SUM(revenue.total_amount_client - revenue.total_amount_supplier) AS gross_profit,
-        SUM(revenue.amount_received -  revenue.amount_paid) AS net_profit,
+        SUM(revenue.amount_received) - SUM(revenue.amount_paid) AS gross_profit,
+        SUM(revenue.amount_received - revenue.amount_paid) AS net_profit,
         SUM(revenue.amount_received) AS net_amount_credited,
-        SUM(revenue.due_client) AS net_amount_due
+        SUM(revenue.due_supplier) AS net_amount_due
     FROM 
         revenue
-    LEFT JOIN orders ON revenue.order_id = orders.order_id
+    LEFT JOIN ordermaster ON revenue.order_id = ordermaster.order_id
     $whereClause
 ";
 
 $summaryResult = $conn->query($summarySql);
-$summary = $summaryResult->fetch_assoc();
+
+// Check if summary query is successful
+if ($summaryResult) {
+    $summary = $summaryResult->fetch_assoc();
+} else {
+    echo "Error fetching summary: " . $conn->error;
+    exit;
+}
+
+// Fetch the detailed revenue report
+$sql = "
+    SELECT 
+    revenue.order_id,
+    revenue.supplier_id,
+    revenue.total_amount_supplier,
+    revenue.amount_received,
+    revenue.due_supplier,
+    revenue.amount_paid,
+    revenue.order_date,
+    ordermaster.type  -- Fetching the 'type' column from the ordermaster table
+FROM 
+    revenue
+LEFT JOIN ordermaster ON revenue.order_id = ordermaster.order_id
+$whereClause
+ORDER BY ordermaster.date ASC;
+
+";
+
+$result = $conn->query($sql);
+
+// Check if the query executed successfully
+if (!$result) {
+    echo "Error fetching report data: " . $conn->error;
+    exit;
+}
 ?>
 
 <!DOCTYPE html>
@@ -90,9 +97,9 @@ $summary = $summaryResult->fetch_assoc();
     <style>
         /* General table styling */
         .table {
-            border-collapse: collapse;
+            ordermaster-collapse: collapse;
             background-color: #ffffff;
-            /* White background for the table */
+            /* White background for the table */    
         }
 
         /* Header Styling (lighter color) */
@@ -145,7 +152,7 @@ $summary = $summaryResult->fetch_assoc();
 
         .table-responsive::-webkit-scrollbar-thumb {
             background: #343a40;
-            border-radius: 4px;
+            bordermaster-radius: 4px;
         }
 
         .table-responsive::-webkit-scrollbar-thumb:hover {
@@ -164,30 +171,30 @@ $summary = $summaryResult->fetch_assoc();
 
         /* Add professional button styles */
         .btn {
-            border-radius: 5px;
+            bordermaster-radius: 5px;
             padding: 8px 15px;
         }
 
         .btn-primary {
             background-color: #0284c7;
             /* Soft blue for primary button */
-            border-color: #0284c7;
+            bordermaster-color: #0284c7;
         }
 
         .btn-primary:hover {
             background-color: #0056b3;
-            border-color: #0056b3;
+            bordermaster-color: #0056b3;
         }
 
         .btn-danger {
             background-color: #dc3545;
             /* Red for danger button */
-            border-color: #dc3545;
+            bordermaster-color: #dc3545;
         }
 
         .btn-danger:hover {
             background-color: #c82333;
-            border-color: #bd2130;
+            bordermaster-color: #bd2130;
         }
     </style>
 
@@ -203,7 +210,7 @@ $summary = $summaryResult->fetch_assoc();
             <h2 class="mb-4 mt-4">Revenue Reports</h2>
 
             <!-- Revenue Summary Cards -->
-            <div class="row mb-4">
+            <!-- <div class="row mb-4">
                 <div class="col-md-3">
                     <div class="card text-white" style="background-color: #0284c7;">
                         <div class="card-body">
@@ -233,8 +240,8 @@ $summary = $summaryResult->fetch_assoc();
                             </p>
                         </div>
                     </div>
-                </div>
-                <div class="col-md-3">
+                </div> -->
+                <!-- <div class="col-md-3">
                     <div class="card text-white bg-secondary">
                         <div class="card-body">
                             <h5 class="card-title">Net Amount Credited</h5>
@@ -264,10 +271,10 @@ $summary = $summaryResult->fetch_assoc();
                         </div>
                     </div>
                 </div>
-            </div>
+            </div> -->
 
             <!-- Filter Form -->
-            <form method="POST" class="mb-4">
+            <!-- <form method="POST" class="mb-4">
                 <div class="row g-3">
                     <div class="col-md-4">
                         <label for="reportType" class="form-label">Select Report Type</label>
@@ -293,21 +300,17 @@ $summary = $summaryResult->fetch_assoc();
                 <div class="mt-3">
                     <button type="submit" class="btn btn-primary">Generate Report</button>
                 </div>
-            </form>
+            </form> -->
 
             <!-- Revenue Table -->
             <div class="table-responsive">
                 <table class="table table-striped">
                     <thead class="table-dark">
                         <tr>
-                            <th>Order ID</th>
-                            <th>Order Date</th>
-                            <th>Order Type</th>
+                            <th>order ID</th>
+                            <th>order Date</th>
+                            <th>order Type</th>
                             <th>Total Amount</th>
-                            <th>Amount Received</th>
-                            <th>Due Client</th>
-                            <th>Amount Paid</th>
-                            <th>Due Supplier</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -318,13 +321,9 @@ $summary = $summaryResult->fetch_assoc();
                                 $orderColor = $row['supplier_id'] === null ? 'text-success' : 'text-danger';
                                 echo "<tr>";
                                 echo "<td class='text-center'>" . htmlspecialchars($row['order_id']) . "</td>";
-                                echo "<td class='text-center'>" . htmlspecialchars($row['date']) . "</td>";
-                                echo "<td class='text-center $orderColor'>" . htmlspecialchars($orderType) . "</td>";
-                                echo "<td class='text-center'>" . ($row['supplier_id'] === null ? htmlspecialchars($row['total_amount_client']) : htmlspecialchars($row['total_amount_supplier'])) . "</td>";
-                                echo "<td class='text-center'>" . htmlspecialchars($row['amount_received']) . "</td>";
-                                echo "<td class='text-center'>" . htmlspecialchars($row['due_client']) . "</td>";
-                                echo "<td class='text-center'>" . htmlspecialchars($row['amount_paid']) . "</td>";
-                                echo "<td class='text-center'>" . htmlspecialchars($row['due_supplier']) . "</td>";
+                                echo "<td class='text-center'>" . htmlspecialchars($row['order_date']) . "</td>";
+                                echo "<td class='text-center'>" . htmlspecialchars($row['type']) . "</td>";
+                                echo "<td class='text-center'>" . ($row['supplier_id'] === null ? htmlspecialchars($row['total_amount_supplier']) : htmlspecialchars($row['total_amount_supplier'])) . "</td>";
                                 echo "</tr>";
                             }
                         } else {

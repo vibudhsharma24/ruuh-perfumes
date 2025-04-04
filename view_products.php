@@ -423,50 +423,51 @@ function addToCart(button, productId, productName) {
             Super Fast & Free Delivery + Additional up to 10% OFF on all Prepaid Orders
         </div> -->
         <div class="flex justify-end">
-            <button class="w-auto bg-red-500 text-white py-2 px-4 rounded" id="checkout-button">
+        <a href="checkoutdetails.html"  class="w-auto bg-red-500 text-white  rounded" id="checkout-button">
                 CHECKOUT • <span id="total-price">Rs. 0.00</span>
-            </button>
+            </>
         </div>
     </div>
 </aside>
-
-
     <script>
-const cartItems = {};
+// Load the cart from localStorage if it exists
+const cartItems = JSON.parse(localStorage.getItem('cart')) || {};
 
+// Function to save cart to localStorage
+function saveCart() {
+    localStorage.setItem('cart', JSON.stringify(cartItems));
+}
+
+// Function to add items to the cart
 function addToCart(button, name, image, price, originalPrice, size, productId) {
-    // If item doesn't exist in the cart, initialize it with 1 quantity
     if (!cartItems[productId]) {
         cartItems[productId] = { name, image, price, originalPrice, size, quantity: 1 };
     } else {
-        // If the item already exists, increase its quantity
         cartItems[productId].quantity += 1;
     }
 
-    // Update the cart display
-    updateCart();
-
-    // Show the cart if it's hidden
+    saveCart(); // Save to localStorage
+    updateCart(); // Update the UI
     document.getElementById('cart').classList.remove('hidden');
 }
 
+// Close cart functionality
 document.getElementById('close-cart').addEventListener('click', () => {
     document.getElementById('cart').classList.add('hidden');
 });
 
+// Update cart UI
 function updateCart() {
     const cartItemsContainer = document.getElementById('cart-items');
-    cartItemsContainer.innerHTML = ''; // Clear the cart before updating
+    cartItemsContainer.innerHTML = '';
     let totalPrice = 0;
     let itemCount = 0;
 
-    // Loop over each item in the cart
     for (const productId in cartItems) {
         const { name, image, price, originalPrice, size, quantity } = cartItems[productId];
         totalPrice += price * quantity;
         itemCount += quantity;
 
-        // Create the cart item HTML
         const cartItem = document.createElement('div');
         cartItem.classList.add('flex', 'items-center', 'mb-2');
         cartItem.innerHTML = `
@@ -476,21 +477,20 @@ function updateCart() {
                 <div class="text-gray-500">₹${price.toFixed(2)} <span class="line-through">₹${originalPrice}</span></div>
                 <div class="text-gray-500">(${size} ml)</div>
                 <div class="flex items-center mt-2">
-                    <button class="border px-2 py-1" onclick="updateQuantity(${productId}, -1)">-</button>
+                    <button class="border px-2 py-1" onclick="updateQuantity('${productId}', -1)">-</button>
                     <span class="mx-2">${quantity}</span>
-                    <button class="border px-2 py-1" onclick="updateQuantity(${productId}, 1)">+</button>
-                    <a class="ml-4 text-blue-500" href="#" onclick="removeItem(${productId})">Remove</a>
+                    <button class="border px-2 py-1" onclick="updateQuantity('${productId}', 1)">+</button>
+                    <a class="ml-4 text-blue-500" href="#" onclick="removeItem('${productId}')">Remove</a>
                 </div>
             </div>
         `;
         cartItemsContainer.appendChild(cartItem);
     }
 
-    // Update the total price and item count in the cart header
     document.getElementById('total-price').textContent = `₹${totalPrice.toFixed(2)}`;
     document.getElementById('cart-item-count').textContent = `${itemCount} item${itemCount > 1 ? 's' : ''}`;
 
-    // Show or hide the free shipping message based on the total price
+    // Show free shipping message if applicable
     const checkoutButton = document.getElementById('checkout-button');
     if (totalPrice >= 595) {
         checkoutButton.classList.remove('bg-red-500');
@@ -501,31 +501,48 @@ function updateCart() {
         checkoutButton.classList.add('bg-red-500');
         document.getElementById('free-shipping-message').classList.add('hidden');
     }
+
+    saveCart(); // Save changes to localStorage
 }
 
+// Function to update item quantity
 function updateQuantity(productId, change) {
     if (cartItems[productId]) {
         cartItems[productId].quantity += change;
-        
-        // If quantity is less than or equal to zero, remove the item
+
         if (cartItems[productId].quantity <= 0) {
             delete cartItems[productId];
         }
-        
-        // Update the cart after changing the quantity
+
         updateCart();
     }
 }
 
+// Function to remove an item from the cart
 function removeItem(productId) {
     delete cartItems[productId];
     updateCart();
 }
 
+// Toggle cart visibility
 function toggleCart() {
-    const cart = document.getElementById('cart');
-    cart.classList.toggle('hidden');
+    document.getElementById('cart').classList.toggle('hidden');
 }
+
+// Load cart on page load
+document.addEventListener('DOMContentLoaded', updateCart);
+
+// Checkout button event
+document.getElementById('checkout-button').addEventListener('click', () => {
+    if (Object.keys(cartItems).length > 0) {
+        localStorage.setItem('cart', JSON.stringify(cartItems)); // Ensure cart data is stored
+        window.location.href = 'checkoutdetails.html';
+    } else {
+        alert('Your cart is empty. Please add items before checking out.');
+    }
+});
+
+
 </script>
 </body>
 </html>

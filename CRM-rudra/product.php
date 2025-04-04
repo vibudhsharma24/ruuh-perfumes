@@ -1,21 +1,19 @@
 <?php
-//require 'auth.php'; // auth check
+$servername = "localhost";
+$username = "root";
+$password = "";
+$dbname = "perfumes";
 
-require 'config.php'; // database connection
+$conn = new mysqli($servername, $username, $password, $dbname);
 
-// Fetch product details
-$sql = "
-    SELECT 
-        product_code,
-        general_name,
-        pp,
-        sp,
-        mrgp,
-        product_life,
-        batch_code
-    FROM 
-        product
-";
+// Check connection
+if ($conn->connect_error) {
+    die("Connection failed: " . $conn->connect_error);
+}
+
+// Fetch products
+$sql = "SELECT * FROM product_details";
+
 
 $result = $conn->query($sql);
 ?>
@@ -31,125 +29,128 @@ $result = $conn->query($sql);
     <title>Product</title>
     <style>
         /* General table styling */
-        .table {
-            border-collapse: collapse;
-            background-color: #ffffff;
-            /* White background for the table */
-        }
 
-        /* Header Styling (lighter color) */
-        .table thead {
-            background-color: #f1f3f5;
-            /* Light grey background */
-            color: #495057;
-            /* Dark grey text for contrast */
-            text-transform: uppercase;
-            font-weight: bold;
-        }
 
-        .table thead th {
-            text-align: center;
-            padding: 12px;
-            background-color: #0284c7;
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            display: flex;
         }
-
-        /* Table body styling */
-        .table tbody td {
-            padding: 12px;
-            vertical-align: middle;
-            text-align: center;
-            color: #495057;
-            /* Dark grey text */
-        }
-
-        /* Zebra striping for rows */
-        .table tbody tr:nth-child(even) {
-            background-color: #f8f9fa;
-            /* Light grey for even rows */
-        }
-
-        /* Hover effect for rows */
-        .table tbody tr:hover {
-            background-color: #e2e6ea;
-            /* Slightly darker hover color */
-            cursor: pointer;
-        }
-
-        /* Responsive table */
-        .table-responsive {
+        .container {
+            width: 80%;
+            margin: auto;
+            background: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
             overflow-x: auto;
         }
-
-        /* Improve scrollbar appearance */
-        .table-responsive::-webkit-scrollbar {
-            height: 8px;
+        h2 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 20px;
         }
-
-        .table-responsive::-webkit-scrollbar-thumb {
-            background: #343a40;
-            border-radius: 4px;
-        }
-
-        .table-responsive::-webkit-scrollbar-thumb:hover {
-            background: #495057;
-        }
-
-        .table-responsive::-webkit-scrollbar-track {
-            background: #f1f1f1;
-        }
-
-        /* Add a subtle shadow for the table */
-        .table {
-            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.27);
-            /* Soft shadow */
-        }
-
-        /* Add professional button styles */
-        .btn {
-            border-radius: 5px;
-            padding: 8px 15px;
-        }
-
-        .btn-primary {
-            background-color: #0284c7;
-            /* Soft blue for primary button */
-            border-color: #0284c7;
-        }
-
-        .btn-primary:hover {
-            background-color: #0056b3;
-            border-color: #0056b3;
-        }
-
-        .btn-danger {
-            background-color: #dc3545;
-            /* Red for danger button */
-            border-color: #dc3545;
-        }
-
-        .btn-danger:hover {
-            background-color: #c82333;
-            border-color: #bd2130;
-        }
-
-        /* Modal Styles */
-        .modal-content {
-            border-radius: 10px;
-        }
-
-        .modal-header {
-            background-color: #0284c7;
+        .add-product-btn {
+            background-color: #28a745;
             color: white;
-            border-bottom: none;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            display: block;
+            width: fit-content;
+            margin: 10px auto;
+            transition: background-color 0.3s;
+        }
+        .add-product-btn:hover {
+            background-color: #218838;
+        }
+        .table-container {
+            overflow-x: auto;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+            border-radius: 5px;
+            overflow: hidden;
+            margin-top: 20px;
+        }
+        th, td {
+            padding: 10px;
+            text-align: center;
+            border-bottom: 1px solid #ddd;
+            white-space: nowrap;
+        }
+        th {
+            background-color: #003366;
+            color: white;
+        }
+        .update-btn, .delete-btn {
+            padding: 8px 12px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+            margin: 5px;
+            transition: background-color 0.3s;
+        }
+        .update-btn {
+            background-color: #008CBA;
+            color: white;
+        }
+        .update-btn:hover {
+            background-color: #007B9E;
+        }
+        .delete-btn {
+            background-color: #f44336;
+            color: white;
+        }
+        .delete-btn:hover {
+            background-color: #d32f2f;
+        }
+        .product-img {
+            width: 80px;
+            height: 80px;
+            border-radius: 5px;
+        }
+        /* Truncate long text with ellipsis */
+        .truncate {
+            max-width: 150px;
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+        }
+        /* Responsive Table for Small Screens */
+        @media screen and (max-width: 768px) {
+            .table-container {
+                overflow-x: auto;
+            }
+            table, thead, tbody, th, td, tr {
+                display: block;
+            }
+            tr {
+                margin-bottom: 10px;
+                border: 1px solid #ddd;
+            }
+            td {
+                text-align: right;
+                position: relative;
+                padding-left: 50%;
+            }
+            td::before {
+                content: attr(data-label);
+                position: absolute;
+                left: 10px;
+                font-weight: bold;
+            }
         }
 
-        .modal-title {
-            font-weight: bold;
-        }
 
-        .modal-footer {
-            border-top: none;
-        }
+
+   
     </style>
 
 </head>
@@ -164,76 +165,154 @@ $result = $conn->query($sql);
         <!-- Main Content -->
         <div id="main" class="col-9">
             <h2 class="mb-4 mt-4">Product Details</h2>
-            <a href="./addForms/product/addProduct.php"><button type="button" class="btn btn-primary mb-4">Add New
+            <a href="./addForms/product/addProduct.html"><button type="button" class="btn btn-primary mb-4">Add New
                     Product</button></a>
             <div class="table-responsive">
                 <table class="table table-striped">
                     <thead class="table-dark">
                         <tr>
-                            <th>Actions</th>
-                            <th>Product Code</th>
-                            <th>Batch Code</th>
-                            <th>General Name</th>
-                            <th>Purchase Price</th>
-                            <th>Selling Price</th>
-                            <th>Margin</th>
-                            <th>Product Life (Months)</th>
+                        <th>ACTIONS</th>
+                        <th>IMAGE</th>
+                        <th> ID</th>
+                        <th> NAME</th>
+                        <th>LOT</th>
+                        <th>SIZE</th>
+                        <th>TYPE</th>
+                        <th>VERSION</th>
+                        <th>GENDER</th>
+                        <th>CATEGORY</th>
+                        <th>S.P</th>
+                        <th>C.P</th>
+                        <th>IMAGE 1</th>
+                        <th>IMAGE 2</th>
+                        <th>IMAGE 3</th>
+                        <th>IMAGE 4</th>
+                        <th>IMAGE 5</th>
+                        <th>IMAGE 6</th>
+                        <th>IMAGE 7</th>
+                        <th>IMAGE 8</th>
+                        <th>IMAGE 9</th>
+                        <th>IMAGE 10</th>
+                        <th>DESC</th>
+                        <th>NOTES</th>
+                        <th>INFO</th>
+                        <th>PURCHASE DATE</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <?php
-                        // Check if there are results and output them
-                        if ($result->num_rows > 0) {
-                            // Output data of each row
-                            while ($row = $result->fetch_assoc()) {
-                                echo "<tr>";
-                                echo "<td>
-                                        <a href='./updateForms/product/updateProduct.php?batch_code=" . urlencode($row['batch_code']) . "'><button type='button' class='btn btn-primary mb-2'>Update</button></a>
-                                        <button type='button' class='btn btn-danger delete-btn' data-batch-code='" . htmlspecialchars($row['batch_code']) . "'>Delete</button>
-                                      </td>";
-                                echo "<td>" . htmlspecialchars($row['product_code']) . "</td>";
-                                echo "<td>" . htmlspecialchars($row['batch_code']) . "</td>";
-                                echo "<td>" . htmlspecialchars($row['general_name']) . "</td>";
-                                echo "<td>" . htmlspecialchars($row['pp']) . "</td>";
-                                echo "<td>" . htmlspecialchars($row['sp']) . "</td>";
-                                echo "<td>" . htmlspecialchars($row['mrgp']) . "</td>";
-                                echo "<td>" . htmlspecialchars($row['product_life']) . "</td>";
-                            }
-                        } else {
-                            echo "<tr><td colspan='14'>No Products found.</td></tr>";
-                        }
+                    <?php while ($row = $result->fetch_assoc()) { ?>
+                        
+                        <td>
+                        <a href="update_product.php?product_id=<?= $row['product_id']; ?>">
+                            <button class="update-btn">Update</button>
+                        </a>
 
-                        // Close the connection
-                        $conn->close();
-                        ?>
-                    </tbody>
+                                <a href="delete_product.php?id=<?= $row['product_id']; ?>" onclick="return confirm('Are you sure?');">
+                                    <button class="delete-btn">Delete</button>
+                                </a>
+                            </td>
+                        <td>
+                            <img src="uploads/<?= $row['product_image']; ?>" class="product-img" alt="Product Image">
+                        </td>
+                        
+                        <td><?= $row['product_id']; ?></td>
+                        <td class="truncate" title="<?= $row['product_name']; ?>"><?= $row['product_name']; ?></td>
+                        <td><?= $row['lot_number']; ?></td>
+                        <td><?= $row['product_size']; ?></td>
+                        <td><?= $row['product_type']; ?></td>
+                        <td><?= $row['product_version']; ?></td>
+                        <td><?= $row['product_gender']; ?></td>
+                        <td><?= $row['product_category']; ?></td>
+                        <td style="color:blue">₹<?= $row['selling_price']; ?></td>
+                        <td style="color:red"><s>₹<?= $row['crossed_price']; ?></s></td>
+                        <td>
+            <?php if (!empty($row['additional_image1'])): ?>
+                <img src="uploads/<?= $row['additional_image1']; ?>" class="product-img" alt="Image 1">
+            <?php else: ?>
+                <p> not added</p>
+            <?php endif; ?>
+        </td>
+        <td>
+            <?php if (!empty($row['additional_image2'])): ?>
+                <img src="<?= $row['additional_image2']; ?>" class="product-img" alt="Image 2">
+            <?php else: ?>
+                <p>not added</p>
+            <?php endif; ?>
+        </td>
+        <td>
+            <?php if (!empty($row['additional_image3'])): ?>
+                <img src="<?= $row['additional_image3']; ?>" class="product-img" alt="Image 3">
+            <?php else: ?>
+                <p>not added</p>
+            <?php endif; ?>
+        </td>
+        <td>
+            <?php if (!empty($row['additional_image4'])): ?>
+                <img src="<?= $row['additional_image4']; ?>" class="product-img" alt="Image 4">
+            <?php else: ?>
+                <p>not added</p>
+            <?php endif; ?>
+        </td>
+        <td>
+            <?php if (!empty($row['additional_image5'])): ?>
+                <img src="<?= $row['additional_image5']; ?>" class="product-img" alt="Image 5">
+            <?php else: ?>
+                <p>not added</p>
+            <?php endif; ?>
+        </td>
+        <td>
+            <?php if (!empty($row['additional_image6'])): ?>
+                <img src="<?= $row['additional_image6']; ?>" class="product-img" alt="Image 6">
+            <?php else: ?>
+                <p>not added</p>
+            <?php endif; ?>
+        </td>
+        <td>
+            <?php if (!empty($row['additional_image7'])): ?>
+                <img src="<?= $row['additional_image7']; ?>" class="product-img" alt="Image 7">
+            <?php else: ?>
+                <p>not added</p>
+            <?php endif; ?>
+        </td>
+        <td>
+            <?php if (!empty($row['additional_image8'])): ?>
+                <img src="<?= $row['additional_image8']; ?>" class="product-img" alt="Image 8">
+            <?php else: ?>
+                <p>not added</p>
+            <?php endif; ?>
+        </td>
+        <td>
+            <?php if (!empty($row['additional_image9'])): ?>
+                <img src="<?= $row['additional_image9']; ?>" class="product-img" alt="Image 9">
+            <?php else: ?>
+                <p>not added</p>
+            <?php endif; ?>
+        </td>
+        <td>
+            <?php if (!empty($row['additional_image10'])): ?>
+                <img src="<?= $row['additional_image10']; ?>" class="product-img" alt="Image 10">
+            <?php else: ?>
+                <p>not added</p>
+            <?php endif; ?>
+        </td>
+                        <td class="truncate" title="<?= $row['product_description']; ?>"><?= $row['product_description']; ?></td>
+                        <td class="truncate" title="Top: <?= $row['top_notes']; ?>, Middle: <?= $row['middle_notes']; ?>, Base: <?= $row['base_notes']; ?>">
+                            <?= $row['top_notes']; ?>, <?= $row['middle_notes']; ?>, <?= $row['base_notes']; ?>
+                        </td>
+                        <td><?= $row['additional_information']; ?></td>
+                        <td><?= $row['purchase_date']; ?></td>
+                        
+                    
+                        
+                        </tr>
+                    <?php } ?>
+                </tbody>
                 </table>
             </div>
         </div>
     </div>
 
-    <!-- Delete Confirmation Modal -->
-    <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="deleteModalLabel">Confirm Delete</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <p>Are you sure you want to delete this product?</p>
-                    <input type="password" id="password" class="form-control" placeholder="Enter your password"
-                        required>
-                    <input type="hidden" id="deleteBatchCode">
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                    <button type="button" class="btn btn-danger" id="confirmDelete">Delete</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
+   
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
         crossorigin="anonymous"></script>

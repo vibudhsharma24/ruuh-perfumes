@@ -5,28 +5,28 @@ require 'config.php'; // database connection
 
 // Fetch order details
 $sql = "
-   SELECT 
-    orders.id,
-    orders.order_id,
-    orders.date,
-    orders.type,
-    orders.client_id,
-    orders.supplier_id,
-    orders.payment_method,
-    orders.total_amount,
-    orders.advance,
-    orders.due,
+SELECT 
+    ordermaster.order_id,
+    ordermaster.date,
+    ordermaster.type,
+    ordermaster.client_id,
+    ordermaster.supplier_id,
+    ordermaster.payment_method,
+    ordermaster.total_amount,
+    ordermaster.advance,
+    ordermaster.due,
     CASE 
-        WHEN client.id IS NOT NULL THEN CONCAT_WS(' ', client.comp_first_name, client.comp_middle_name, client.comp_last_name)
-        WHEN supplier.id IS NOT NULL THEN CONCAT_WS(' ', supplier.comp_first_name, supplier.comp_middle_name, supplier.comp_last_name)
+        WHEN supplier.supplier_id IS NOT NULL THEN CONCAT_WS(' ', supplier.comp_first_name, supplier.comp_middle_name, supplier.comp_last_name)
         ELSE 'Unknown'
-    END AS party_name
+    END AS party_name,
+    -- Assuming there is a way to identify the product for the order, we use a subquery to get the general_name
+    (SELECT product.general_name 
+     FROM product 
+     LIMIT 1) AS general_name -- Adjust the subquery based on your product-to-order relation
 FROM 
-    orders
-LEFT JOIN client ON orders.client_id = client.id
-LEFT JOIN supplier ON orders.supplier_id = supplier.id
-ORDER BY orders.date;
-
+    ordermaster
+LEFT JOIN supplier ON ordermaster.supplier_id = supplier.supplier_id
+ORDER BY ordermaster.date;
 ";
 
 $result = $conn->query($sql);
@@ -44,7 +44,7 @@ if (!$result) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-    <title>Orders</title>
+    <title>Order Details</title>
     <style>
         /* General table styling */
         .table {
@@ -178,7 +178,7 @@ if (!$result) {
         <!-- Main Content -->
         <div id="main" class="col-9">
             <h2 class="mt-4 mb-4">Order Details</h2>
-            <a href="./addForms/orders/addClientOrder.php"><button type="button" class="btn btn-primary mb-4">Add New Client Order</button></a>
+            <a href="./addForms/supplier/addSupplier.php"><button type="button" class="btn btn-primary mb-4">Add New supplier</button></a>
             <a href="./addForms/orders/addSupplierOrder.php"><button type="button" class="btn btn-secondary mb-4">Add New Supplier Order</button></a>
             <div class="table-responsive">
                 <table class="table table-striped">
@@ -187,12 +187,10 @@ if (!$result) {
                             <th>Actions</th>
                             <th>Order ID</th>
                             <th>Order Date</th>
-                            <th>Party Name</th>
-                            <th>Order Type</th>
+                            <th>Product Ordered</th>
+                            <th>Customer Name</th>
                             <th>Payment Method</th>
                             <th>Total Amount</th>
-                            <th>Advance</th>
-                            <th>Due</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -206,11 +204,11 @@ if (!$result) {
 
                                 // Update button with conditional link based on order type
                                 if ($row['type'] == "Sale") {
-                                    echo "<a href='./updateForms/orders/updateClientOrder.php?order_id=" . urlencode($row['order_id']) . "'><button type='button' class='btn btn-primary mb-1'>Update</button></a>";
+                                    echo "<a href='./updateForms/orders/updatesupplierOrder.php?order_id=" . urlencode($row['order_id']) . "'><button type='button' class='btn btn-primary mb-1'>Update</button></a>";
                                     // Show invoice button only for "Sale" type
                                     echo "<a href='./generateOrderInvoice.php?id=" . urlencode($row['order_id']) . "'><button type='button' class='btn btn-success mb-1'>Invoice</button></a>";
                                 } else { // Assuming "Purchase" is the only other option
-                                    echo "<a href='./updateForms/orders/updateSupplierOrder.php?order_id=" . urlencode($row['order_id']) . "'><button type='button' class='btn btn-primary mb-1'>Update</button></a>";
+                                    echo "<a style='display:flex' href='./updateForms/orders/updateSupplierOrder.php?order_id=" . urlencode($row['order_id']) . "'><button type='button' class='btn btn-primary mb-1'>Update</button></a>";
                                     // Do not show invoice button for "Purchase" type
                                 }
 
@@ -218,12 +216,10 @@ if (!$result) {
         </td>";
                                 echo "<td>" . htmlspecialchars($row['order_id']) . "</td>";
                                 echo "<td>" . htmlspecialchars($row['date']) . "</td>";
-                                echo "<td>" . htmlspecialchars($row['party_name']) . "</td>";
                                 echo "<td>" . htmlspecialchars($row['type']) . "</td>";
+                                echo "<td>" . htmlspecialchars($row['party_name']) . "</td>";
                                 echo "<td>" . htmlspecialchars($row['payment_method']) . "</td>";
                                 echo "<td>" . htmlspecialchars($row['total_amount']) . "</td>";
-                                echo "<td>" . htmlspecialchars($row['advance']) . "</td>";
-                                echo "<td>" . htmlspecialchars($row['due']) . "</td>";
                             }
                         } else {
                             echo "<tr><td colspan='22'>No orders found.</td></tr>";
@@ -231,7 +227,7 @@ if (!$result) {
 
                         // Close the connection
                         $conn->close();
-                        ?>
+                        ?>  
                     </tbody>
                 </table>
             </div>
@@ -239,7 +235,7 @@ if (!$result) {
     </div>
 
     <!-- Delete Confirmation Modal -->
-    <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+    <!-- <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
@@ -257,7 +253,7 @@ if (!$result) {
                 </div>
             </div>
         </div>
-    </div>
+    </div> -->
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
@@ -266,42 +262,42 @@ if (!$result) {
         document.addEventListener('DOMContentLoaded', function() {
             const deleteButtons = document.querySelectorAll('.delete-btn');
             const deleteModal = new bootstrap.Modal(document.getElementById('deleteModal'));
-            const confirmDeleteBtn = document.getElementById('confirmDelete');
+            // const confirmDeleteBtn = document.getElementById('confirmDelete');
             let orderIdToDelete = null;
 
             deleteButtons.forEach(button => {
                 button.addEventListener('click', function() {
                     orderIdToDelete = this.dataset.orderId;
-                    document.getElementById('deleteOrderId').value = orderIdToDelete;
+                    document.getElementById('   OrderId').value = orderIdToDelete;
                     deleteModal.show();
                 });
             });
 
-            confirmDeleteBtn.addEventListener('click', function() {
-                const enteredPassword = document.getElementById('password').value;
-                const orderId = document.getElementById('deleteOrderId').value;
+        //     confirmDeleteBtn.addEventListener('click', function() {
+        //         const enteredPassword = document.getElementById('password').value;
+        //         const orderId = document.getElementById('deleteOrderId').value;
 
-                // AJAX request to server-side script for password verification and deletion
-                const xhr = new XMLHttpRequest();
-                xhr.open('POST', 'deleteOrder.php', true);
-                xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-                xhr.onload = function() {
-                    if (xhr.status === 200) {
-                        const response = JSON.parse(xhr.responseText);
-                        if (response.success) {
-                            alert('Order deleted successfully.');
-                            location.reload(); // Reload the page to reflect changes
-                        } else {
-                            alert(response.message);
-                        }
-                    } else {
-                        alert('An error occurred.');
-                    }
-                    deleteModal.hide();
-                };
-                xhr.send('order_id=' + encodeURIComponent(orderId) + '&password=' + encodeURIComponent(enteredPassword));
+        //         // AJAX request to server-side script for password verification and deletion
+        //         const xhr = new XMLHttpRequest();
+        //         xhr.open('POST', 'deleteOrder.php', true);
+        //         xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+        //         xhr.onload = function() {
+        //             if (xhr.status === 200) {
+        //                 const response = JSON.parse(xhr.responseText);
+        //                 if (response.success) {
+        //                     alert('Order deleted successfully.');
+        //                     location.reload(); // Reload the page to reflect changes
+        //                 } else {
+        //                     alert(response.message);
+        //                 }
+        //             } else {
+        //                 alert('An error occurred.');
+        //             }
+        //             deleteModal.hide();
+        //         };
+        //         xhr.send('order_id=' + encodeURIComponent(orderId) + '&password=' + encodeURIComponent(enteredPassword));
             });
-        });
+        // });
     </script>
 </body>
 

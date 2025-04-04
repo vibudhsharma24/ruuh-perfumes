@@ -1,0 +1,130 @@
+<html lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>CRM DASHBOARD</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet"/>
+    <style>
+        body {
+            display: flex;
+            min-height: 100vh;
+            margin: 0;
+        }
+        .sidebar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 20%; /* Adjust width as needed */
+            height: 100%;
+            background-color: #1e3a8a; /* Tailwind's bg-blue-900 */
+            color: white;
+            overflow-y: auto; /* Allow scrolling if content exceeds height */
+        }
+        .main-content {
+            margin-left: 20%; /* Same as sidebar width */
+            padding: 2rem; /* Tailwind's p-8 */
+            width: 80%; /* Default width */
+            overflow-y: auto; /* Allow scrolling if content exceeds height */
+            min-height: calc(100vh - 200rem);
+        }
+    </style>
+</head>
+<body class="bg-gray-100">
+    <div class="sidebar">
+        <div class="p-4">
+            <img alt="Company Logo" class="mx-auto mb-4" height="90" src="assets/images/logo.png" width="100"/>
+            <h2 class="text-center text-xl font-bold">RUUH PERFUMES</h2> <!-- Ensure this is white -->
+        </div>
+        <nav class="space-y-4">
+            <a class="flex items-center px-4 py-2 hover:bg-blue-700" href="supplier.php" onclick="loadContent('suppliers.php')">
+                <i class="fas fa-users mr-2"></i>
+                Suppliers
+            </a>
+            <a class="flex items-center px-4 py-2 hover:bg-blue-700" href="product_details.php'" onclick="loadContent('product_details.php')">
+                <i class="fas fa-tags mr-2"></i>
+                Products
+            </a>
+            <a class="flex items-center px-4 py-2 hover:bg-blue-700" href="client_details.php" onclick="loadContent('client_details.php')">
+                <i class="fas fa-user-friends mr-2"></i>
+                Clients
+            </a>
+            <a class="flex items-center px-4 py-2 hover:bg-blue-700" href="#" onclick="loadContent('stock.html')">
+                <i class="fas fa-boxes mr-2"></i>
+                Stock
+            </a>
+            <a class="flex items-center px-4 py-2 hover:bg-blue-700" href="#" onclick="loadContent('logistics.html')">
+                <i class="fas fa-truck mr-2"></i>
+                Logistics
+            </a>
+            <a class="flex items-center px-4 py-2 hover:bg-blue-700" href="#" onclick="loadContent('profit.html')">
+                <i class="fas fa-truck mr-2"></i>
+                Profit
+            </a>
+            <a class="flex items-center px-4 py-2 hover:bg-blue-700" href="#" onclick="loadContent('revenue.html')">
+                <i class="fas fa-rupee-sign mr-2"></i>
+                Revenue
+            </a>
+            <a class="flex items-center px-4 py-2 hover:bg-blue-700" href="#" onclick="loadContent('orders.html')">
+                <i class="fas fa-shopping-cart mr-2"></i>
+                Orders
+            </a>
+            <a class="flex items-center px-4 py-2 hover:bg-blue-700" href="#" onclick="loadContent('logout.html')">
+                <i class="fas fa-sign-out-alt mr-2"></i>
+                Logout
+            </a>
+        </nav>
+
+        <!-- Static Section -->
+        <div class="mt-6 p-4 bg-blue-800 rounded-lg">
+            <h3 class="text-lg font-bold">Welcome!</h3>
+            <p class="text-sm">Here you can manage your CRM activities efficiently.</p>
+            <ul class="mt-2 space-y-1">
+                <li><a href="#" class="text-blue-300 hover:underline">Quick Links</a></li>
+                <li><a href="#" class="text-blue-300 hover:underline">Support</a></li>
+                <li><a href="#" class="text-blue-300 hover:underline">Settings</a></li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content" id="main-content">
+        <h1 class="text-3xl font-bold mb-6">CRM DASHBOARD</h1>
+        <p>Select an option from the sidebar to view details.</p>
+        <!-- Action Buttons -->
+        <div class="mb-6 space-x-4">
+            <a href="#" class="inline-block bg-blue-800 text-white py-4 px-8 rounded-lg hover:bg-blue-700 transition duration-200">Orders</a>
+            <a href="#" class="inline-block bg-green-600 text-white py-4 px-8 rounded-lg hover:bg-green-700 transition duration-200">Net Profit</a>
+            <a href="#" class="inline-block bg-yellow-600 text-white py-4 px-8 rounded-lg hover:bg-yellow-700 transition duration-200">Logistics</a>
+            <a href="#" class="inline-block bg-purple-600 text-white py-4 px-8 rounded-lg hover:bg-purple-700 transition duration-200">Registrations</a>
+            <a href="#" class="inline-block bg-red-600 text-white py-4 px-8 rounded-lg hover:bg-red-700 transition duration-200">Reorder Level</a>
+        </div>
+    </div>
+
+    <script>
+        function loadContent(page) {
+            const mainContent = document.getElementById('main-content');
+            // Increase width for product details
+            if (page === 'product_details.php') {
+                mainContent.style.width = '1200%'; // Increase width for product details
+            } else {
+                mainContent.style.width = '80%'; // Default width for other pages
+            }
+
+            fetch(page)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    return response.text();
+                })
+                .then(data => {
+                    mainContent.innerHTML = data; // Ensure only the main content is updated
+                })
+                .catch(error => {
+                    mainContent.innerHTML = '<h1>Error loading content</h1>';
+                });
+        }
+    </script>
+</body>
+</html>

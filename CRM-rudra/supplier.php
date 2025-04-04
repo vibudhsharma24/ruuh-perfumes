@@ -16,7 +16,6 @@ $sql = "
         manager_name,
         manager_phone,
         manager_email,
-        chemical_license,
         comp_email,
         comp_address,
         trader_id,
@@ -142,6 +141,36 @@ $result = $conn->query($sql);
             background-color: #c82333;
             border-color: #bd2130;
         }
+
+
+        .details-btn {
+            background-color: #008CBA;
+            color: white;
+        }
+        .details-btn:hover {
+            background-color: #007B9E;
+        }
+        .update-btn {
+            background-color: #f44336;
+            color: white;
+        }
+        .update-btn:hover {
+            background-color: #d32f2f;
+        }
+        .update-btn, .details-btn {
+            padding: 8px 8px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+            margin: 5px;
+            transition: background-color 0.3s;
+        }
+        .btn-main{
+            display: flex;
+        }
+
+
     </style>
 
 
@@ -164,12 +193,9 @@ $result = $conn->query($sql);
                     <thead class="table-dark">
                         <tr>
                             <th>Actions</th>
-                            <th>Company Name</th>
-                            <th>Company Type</th>
-                            <th>Company Address</th>
+                            <th>Supplier Name</th>
+                            <th>Supplier Phone no</th>
                             <th>Manager Name</th>
-                            <th>Manager Phone</th>
-                            <th>Chemical License</th>
                             <th>GST No</th>
                             <th>PAN No</th>
                             <th>TAN No</th>
@@ -182,19 +208,19 @@ $result = $conn->query($sql);
                             // Output data of each row
                             while ($row = $result->fetch_assoc()) {
                                 echo "<tr>";
-                                echo "<td><a href='./updateForms/supplier/updateSupplierDetails.php?trader_id=" . urlencode($row['trader_id']) . "'>
-        <button style=\"margin-bottom: 5px;\" type='button' class='btn btn-danger'>Edit</button>
-    </a>
-    <a href='./supplierDetails.php?trader_id=" . urlencode($row['trader_id']) . "'>
-        <button type='button' class='btn btn-primary'>Details</button>
-    </a>
-</td>";
+
+
+
+                                    echo "<td class='btn-main'><a href='./updateForms/supplier/updateSupplierDetails.php?trader_id=" . urlencode($row['trader_id']) . "'>
+                                            <button style=\"margin-bottom: 5px;\" type='button' class='update-btn'>Edit</button>
+                                        </a>
+                                        <a href='./supplierDetails.php?trader_id=" . urlencode($row['trader_id']) . "'>
+                                            <button type='button' class='details-btn'>Details</button>
+                                    </a>
+                                </td>";
                                 echo "<td>" . htmlspecialchars($row['company_name']) . "</td>";
-                                echo "<td>" . htmlspecialchars($row['comp_type']) . "</td>";
-                                echo "<td>" . htmlspecialchars($row['comp_address']) . "</td>";
-                                echo "<td>" . htmlspecialchars($row['manager_name']) . "</td>";
                                 echo "<td>" . htmlspecialchars($row['manager_phone']) . "</td>";
-                                echo "<td>" . htmlspecialchars($row['chemical_license']) . "</td>";
+                                echo "<td>" . htmlspecialchars($row['manager_name']) . "</td>";
                                 echo "<td>" . htmlspecialchars($row['gst_no']) . "</td>";
                                 echo "<td>" . htmlspecialchars($row['pan_no']) . "</td>";
                                 echo "<td>" . htmlspecialchars($row['tan_no']) . "</td>";

@@ -12,7 +12,7 @@ $sql = "SELECT
             phone, email, address,
             CONCAT_WS(' ', comp_first_name, comp_middle_name, comp_last_name) AS company_name,
             comp_type, website, manager_name, manager_phone, manager_email,
-            chemical_license, comp_email, comp_address, trader_id, gst_no, pan_no, tan_no, remarks
+         comp_email, comp_address, trader_id, gst_no, pan_no, tan_no, remarks
         FROM 
             supplier
         WHERE 
@@ -142,7 +142,6 @@ $conn->close();
                     <div class="card">
                         <div class="card-body">
                             <h5 class="card-title">Other Details</h5>
-                            <p class="card-text"><strong>Chemical License:</strong> <?= htmlspecialchars($supplier['chemical_license']) ?: "Not Available" ?></p>
                             <p class="card-text"><strong>Trader ID:</strong> <?= htmlspecialchars($supplier['trader_id']) ?: "Not Available" ?></p>
                             <p class="card-text"><strong>GST Number:</strong> <?= htmlspecialchars($supplier['gst_no']) ?: "Not Available" ?></p>
                             <p class="card-text"><strong>PAN Number:</strong> <?= htmlspecialchars($supplier['pan_no']) ?: "Not Available" ?></p>
